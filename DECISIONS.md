@@ -69,4 +69,12 @@
 - **Assumptions:** Fabric API + Loom versions in gradle.properties are placeholders.
 - **How to revert:** edit `gradle.properties`/`build.gradle` versions.
 
+### D-008 — Gradle/Loom version compatibility (blocked)  (2026-10-22) — Accepted
+- **Context:** Loom 1.14.10 (latest stable compatible with Java 21) requires Gradle 9.2.0+ (plugin.api-version 9.2.0). Only Gradle 9.0.0 is available for direct download; 9.2+ returns 404 from services.gradle.org.
+- **Options:** A) install Gradle 9.2+ via alternative source (SDKMAN, mirror, GitHub release). B) use an older Loom version compatible with Gradle 9.0. C) wait for Gradle 9.2+ to be published.
+- **Analysis:** precedent: Fabric template uses Loom 1.18-SNAPSHOT (requires Gradle 9.7+). intent: make `./gradlew build` work. risk: Loom versions older than 1.14 may not exist or lack MC 26.3 support. simplicity: A is the only viable path.
+- **Decision:** A — user must install Gradle 9.2+ (or newer) before `./gradlew build`/`genSources` can run. Wrapper is set to Gradle 9.0.0 as a placeholder.
+- **Assumptions:** Gradle 9.2+ exists but isn't directly downloadable from services.gradle.org.
+- **How to revert:** change `gradle/wrapper/gradle-wrapper.properties` distributionUrl to a different Gradle version.
+
 
