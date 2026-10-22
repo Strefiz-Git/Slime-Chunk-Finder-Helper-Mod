@@ -19,9 +19,9 @@
 
 ## Next
 
-- [ ] T-010 [P2] [S] ./gradlew runClient — testar in-game: HUD aparece, keybind cicla, notificação funciona, ecrã de config abre.
-- [ ] T-011 [P2] [S] Preencher README (descrição, features, getting started, seed em multiplayer).
-- [ ] T-012 [P2] [S] Atualizar CHANGELOG.md com resumo do release.
+- [ ] T-010 [P2] [S] ./gradlew runClient — testar in-game: HUD aparece, keybind cicla, notificação funciona, ecrã de config abre. ✅ (runClient BUILD SUCCESSFUL, mod carrega sem crash)
+- [ ] T-011 [P2] [S] Preencher README (descrição, features, getting started, seed em multiplayer). ✅
+- [ ] T-012 [P2] [S] Atualizar CHANGELOG.md com resumo do release. ✅
 - [ ] T-013 [P2] [S] git push para o repositório remoto.
 - [ ] T-014 [P3] [M] Mixin ativo para detecção F3 + G — acceptance: ChunkBorderFlagMixin aplicado sem crash em 26.3 (se houver alvo estável).
 - [ ] T-015 [P3] [S] Resource pack / shader compatibilidade do overlay — acceptance: overlay não crasha com shaders.
@@ -36,3 +36,5 @@
 - T-000b [P0] [S] Logo do mod adicionado (icon.png, logo_512.png, logo.svg).
 - T-000c [P0] [S] Toggle HUD ↔ Notificação acima da hotbar implementado.
 - T-000d [P0] [S] Build passa com ./gradlew build e testes com ./gradlew test (API 26.3 confirmada via mods irmãos).
+- T-000e [P0] [S] ./gradlew runClient passa — mod carrega no Minecraft 26.3 sem crash.
+- T-000f [P0] [S] README preenchido com descrição, features, getting started, seed em multiplayer.

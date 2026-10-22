@@ -5,11 +5,11 @@
 
 ## Current state
 
-- **Current milestone:** M0 — Foundations + Fase 1-8 (build passa, testes passam)
+- **Current milestone:** M0 — Foundations + Fase 1-8 (build passa, testes passam, runClient passa)
 - **Last update:** 2026-10-22
-- **Build/test health:** ✅ ./gradlew build passa ✅ ./gradlew test passa
-- **In progress:** Documentação final (README, TODO, PROGRESS, CHANGELOG) e validação in-game
-- **Recommended next step:** ./gradlew runClient para testar in-game, depois preencher README e fazer push
+- **Build/test health:** ✅ ./gradlew build passa ✅ ./gradlew test passa ✅ ./gradlew runClient passa (mod carrega no MC 26.3 sem crash)
+- **In progress:** git push para o repositório remoto (T-013)
+- **Recommended next step:** git push, depois avaliar T-014 (Mixin F3+G) e T-015 (shaders)
 - **Blockers / open questions:** Mixin F3+G inativo por segurança (target/campo a confirmar em 26.3); overlay verde depende de confirmação da API de render de mundo
 - **Risks / relevant technical debt:** Nomes de API confirmados via mods irmãos (RocketWithSpearMod, ScreenMine, ClientHarvestMod) que compilam nesta máquina para MC 26.3
 
