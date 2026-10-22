@@ -1,5 +1,7 @@
 package com.strefiz.slimechunkhud.input;
 
+
+
 import com.strefiz.slimechunkhud.config.ModConfig;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
@@ -9,15 +11,15 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 
 /**
- * Keybind do HUD, registrada nas configurações de teclas do Minecraft.
+ * Keybind do HUD, registrada nas configuraÃ§Ãµes de teclas do Minecraft.
  * <p>
- * Pressionar a tecla ciclo entre tręs estados:
+ * Pressionar a tecla ciclo entre trÄ™s estados:
  * <ol>
- *   <li>Desligado: nada ė mostrado.</li>
- *   <li>HUD: texto contínuo na posiçāo escolhida pelo utilizador.</li>
- *   <li>Notificaçāo: aviso transitório acima da hotbar ao entrar numa slime chunk.</li>
+ *   <li>Desligado: nada Ä— mostrado.</li>
+ *   <li>HUD: texto contÃ­nuo na posiÃ§Äo escolhida pelo utilizador.</li>
+ *   <li>NotificaÃ§Äo: aviso transitÃ³rio acima da hotbar ao entrar numa slime chunk.</li>
  * </ol>
- * A tecla pode ser redefinida pelo jogador nas opções de controles do jogo.
+ * A tecla pode ser redefinida pelo jogador nas opÃ§Ãµes de controles do jogo.
  */
 public class HudKeybind {
 
@@ -33,7 +35,7 @@ public class HudKeybind {
         this.keybind = KeyMappingHelper.registerKeyMapping(new KeyMapping(
                 KEY_NAME,
                 InputConstants.Type.KEYBOARD,
-                InputConstants.KEY_K, // tecla padrão (redefinível pelo jogador)
+                InputConstants.KEY_K, // tecla padrÃ£o (redefinÃ­vel pelo jogador)
                 KeyMapping.Category.GAMEPLAY
         ));
     }
@@ -70,7 +72,7 @@ public class HudKeybind {
                 String msg = switch (next) {
                     case OFF -> "Slime Chunk: desativado";
                     case HUD -> "Slime Chunk: modo HUD";
-                    case NOTIFICATION -> "Slime Chunk: modo notificaçāo";
+                    case NOTIFICATION -> "Slime Chunk: modo notificaÃ§Äo";
                 };
                 Minecraft.getInstance().player.sendSystemMessage(Component.literal(msg));
             }
@@ -81,3 +83,4 @@ public class HudKeybind {
         return keybind;
     }
 }
+

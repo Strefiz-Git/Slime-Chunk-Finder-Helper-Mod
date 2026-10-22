@@ -1,5 +1,6 @@
 package com.strefiz.slimechunkhud.screen;
 
+
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import net.minecraft.client.gui.screens.Screen;
 

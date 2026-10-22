@@ -7,18 +7,18 @@ import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Fornece a seed do mundo atual, respeitando a limitaçāo de que o cliente nāo
+ * Fornece a seed do mundo atual, respeitando a limitaÃ§Äo de que o cliente nÄo
  * conhece a seed em multiplayer.
  * <p>
  * Ordem de prioridade:
  * <ol>
  *   <li>Singleplayer: seed do servidor integrado.</li>
  *   <li>Multiplayer: seed inserida manualmente na config, por servidor.</li>
- *   <li>Indisponível: estado "seed desconhecida".</li>
+ *   <li>IndisponÃ­vel: estado "seed desconhecida".</li>
  * </ol>
- * A funcionalidade sō fica ativa na Overworld.
+ * A funcionalidade sÅ fica ativa na Overworld.
  * <p>
- * A detecçāo de Overworld e a leitura da seed sāo feitas pelo entrypoint
+ * A detecÃ§Äo de Overworld e a leitura da seed sÄo feitas pelo entrypoint
  * ({@link com.strefiz.slimechunkhud.SlimeChunkHudMod}) que tem acesso a
  * {@code Minecraft.getInstance().level} e ao servidor integrado.
  */
@@ -31,13 +31,19 @@ public class SeedProvider {
     private String currentServerKey = "singleplayer";
     private long seed = UNKNOWN;
     private boolean dimensionOverworld = true;
+    private SlimeChunkProvider serverProvider;
 
     public SeedProvider() {
-        // Carrega sementes jā salvas na config (se houver).
+        // Carrega sementes jÄ salvas na config (se houver).
         ModConfig.get().serverSeeds.forEach((k, v) -> serverSeeds.put(k, v));
     }
 
-    /** Define a chave do servidor atual (endereço) e carrega a seed guardada. */
+    /** Define o SlimeChunkProvider do servidor (quando disponÃ­vel). */
+    public void setServerProvider(SlimeChunkProvider provider) {
+        this.serverProvider = provider;
+    }
+
+    /** Define a chave do servidor atual (endereÃ§o) e carrega a seed guardada. */
     public void setCurrentServer(String serverKey) {
         this.currentServerKey = Objects.requireNonNullElse(serverKey, "singleplayer");
         this.seed = serverSeeds.getOrDefault(this.currentServerKey, UNKNOWN);
@@ -51,7 +57,7 @@ public class SeedProvider {
         ModConfig.save();
     }
 
-    /** Retorna a seed, ou {@link #UNKNOWN} se nāo houver. */
+    /** Retorna a seed, ou {@link #UNKNOWN} se nÄo houver. */
     public long getSeed() {
         return seed;
     }
@@ -61,7 +67,7 @@ public class SeedProvider {
         return seed != UNKNOWN;
     }
 
-    /** {@code true} se a dimensão atual é a Overworld. */
+    /** {@code true} se a dimensÃ£o atual Ã© a Overworld. */
     public boolean isOverworld() {
         return dimensionOverworld;
     }
@@ -71,16 +77,27 @@ public class SeedProvider {
     }
 
     /**
-     * {@code true} se a chunk é slime chunk (sō em Overworld e com seed conhecida).
+     * {@code true} se a chunk Ã© slime chunk.
+     * <p>
+     * Se o servidor companheiro estÃ¡ disponÃ­vel, usa o bitset recebido do servidor
+     * (sem expor a seed). Caso contrÃ¡rio, usa o cÃ¡lculo local com a seed.
      */
     public boolean isSlimeChunk(int chunkX, int chunkZ) {
-        if (!dimensionOverworld || !hasSeed()) {
+        if (!dimensionOverworld) {
+            return false;
+        }
+        // Se o servidor tem o mod companheiro, usar os dados do servidor.
+        if (serverProvider != null && serverProvider.serverHasMod() && serverProvider.hasData(chunkX, chunkZ)) {
+            return serverProvider.isSlimeChunk(chunkX, chunkZ);
+        }
+        // Fallback: cÃ¡lculo local (seed manual ou singleplayer).
+        if (!hasSeed()) {
             return false;
         }
         return checker.isSlimeChunk(seed, chunkX, chunkZ);
     }
 
-    /** Limpa estado ao trocar de mundo/dimensão. */
+    /** Limpa estado ao trocar de mundo/dimensÃ£o. */
     public void reset() {
         this.currentServerKey = "singleplayer";
         this.seed = UNKNOWN;

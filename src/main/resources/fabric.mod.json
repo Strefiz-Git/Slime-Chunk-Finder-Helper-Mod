@@ -11,8 +11,11 @@
   "license": "MIT",
   "icon": "assets/slimechunkhud/icon.png",
 
-  "environment": "client",
+  "environment": "*",
   "entrypoints": {
+    "main": [
+      "com.strefiz.slimechunkhud.SlimeChunkServerMod"
+    ],
     "client": [
       "com.strefiz.slimechunkhud.SlimeChunkHudMod"
     ],

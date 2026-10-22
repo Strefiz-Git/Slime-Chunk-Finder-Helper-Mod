@@ -1,5 +1,7 @@
 package com.strefiz.slimechunkhud.render;
 
+
+
 import com.strefiz.slimechunkhud.config.ModConfig;
 import com.strefiz.slimechunkhud.seed.SeedProvider;
 import net.fabricmc.fabric.api.client.rendering.v1.level.LevelRenderContext;
@@ -14,8 +16,8 @@ import java.util.function.Supplier;
  * chunk, desenha um contorno verde.
  * <p>
  * Nota: a leitura da flag F3 + G depende de {@link ChunkBorderDetector}, que
- * precisa de um Mixin confirmado para 26.3 (veja a classe). Até lā, o overlay
- * fica ativo quando {@code borderOverlayEnabled} e a flag estā ligada.
+ * precisa de um Mixin confirmado para 26.3 (veja a classe). AtÃ© lÄ, o overlay
+ * fica ativo quando {@code borderOverlayEnabled} e a flag estÄ ligada.
  */
 public class SlimeChunkOverlay {
 
@@ -45,9 +47,9 @@ public class SlimeChunkOverlay {
         int playerChunkZ = (int) Math.floor(client.player.getZ() / 16.0);
         int radius = Math.max(1, cfg.overlayRadius);
 
-        // TODO: confirmar a API exata de LevelRenderContext e buffer de vértices
+        // TODO: confirmar a API exata de LevelRenderContext e buffer de vÃ©rtices
         // para 26.3 antes de ativar o desenho de contornos. Abaixo, a estrutura de
-        // iteração; o desenho real fica a confirmar nas mappings.
+        // iteraÃ§Ã£o; o desenho real fica a confirmar nas mappings.
         for (int z = playerChunkZ - radius; z <= playerChunkZ + radius; z++) {
             for (int x = playerChunkX - radius; x <= playerChunkX + radius; x++) {
                 if (seedProvider.isSlimeChunk(x, z)) {
@@ -58,8 +60,9 @@ public class SlimeChunkOverlay {
     }
 
     private void drawChunkOutline(LevelRenderContext context, int chunkX, int chunkZ, ModConfig cfg) {
-        // Desenho do contorno verde: implementar com buffer de vértices + RenderType
-        // após confirmar a API de render de mundo em 26.3.
+        // Desenho do contorno verde: implementar com buffer de vÃ©rtices + RenderType
+        // apÃ³s confirmar a API de render de mundo em 26.3.
         // Coordenadas da chunk: [chunkX*16, chunkZ*16] .. [(chunkX+1)*16, (chunkZ+1)*16].
     }
 }
+

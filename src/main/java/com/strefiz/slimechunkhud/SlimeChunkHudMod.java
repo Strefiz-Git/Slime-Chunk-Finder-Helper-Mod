@@ -1,12 +1,15 @@
 package com.strefiz.slimechunkhud;
 
+
 import com.strefiz.slimechunkhud.config.ModConfig;
 import com.strefiz.slimechunkhud.hud.SlimeChunkHud;
 import com.strefiz.slimechunkhud.hud.SlimeChunkNotifier;
 import com.strefiz.slimechunkhud.hud.SlimeChunkStateTracker;
 import com.strefiz.slimechunkhud.input.HudKeybind;
+import com.strefiz.slimechunkhud.network.SlimeChunkNetworking;
 import com.strefiz.slimechunkhud.render.SlimeChunkOverlay;
 import com.strefiz.slimechunkhud.seed.SeedProvider;
+import com.strefiz.slimechunkhud.seed.ServerSlimeChunkProvider;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
@@ -40,10 +43,13 @@ public class SlimeChunkHudMod implements ClientModInitializer {
     private SlimeChunkStateTracker tracker;
     private SlimeChunkOverlay overlay;
     private SeedProvider seedProvider;
+    private ServerSlimeChunkProvider serverProvider;
 
     @Override
     public void onInitializeClient() {
         seedProvider = new SeedProvider();
+        serverProvider = new ServerSlimeChunkProvider();
+        seedProvider.setServerProvider(serverProvider);
 
         keybind = new HudKeybind();
         keybind.register();
@@ -54,6 +60,9 @@ public class SlimeChunkHudMod implements ClientModInitializer {
         hud = new SlimeChunkHud(seedProvider, ModConfig::get);
         notifier = new SlimeChunkNotifier(seedProvider, ModConfig::get, tracker);
         overlay = new SlimeChunkOverlay(seedProvider, ModConfig::get);
+
+        // Registra o handler S2C do servidor companheiro (se disponível).
+        SlimeChunkNetworking.registerClient(serverProvider);
 
         // HUD (apos os overlays vanilla para nāo ser coberto).
         HudElementRegistry.addLast(HUD_ID, (gfx, delta) -> hud.extractRenderState(gfx, delta));
@@ -105,12 +114,14 @@ public class SlimeChunkHudMod implements ClientModInitializer {
             boolean overworld = level != null && isOverworld(level);
             seedProvider.setDimensionOverworld(overworld);
 
+            serverProvider.tick();
             notifier.tick();
 
             // Reset ao trocar de mundo/dimensão.
             if (!overworld) {
                 tracker.reset();
                 seedProvider.reset();
+                serverProvider.reset();
             }
 
             // Singleplayer: tentar obter a seed do servidor integrado.

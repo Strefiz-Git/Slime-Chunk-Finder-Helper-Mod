@@ -1,5 +1,7 @@
 package com.strefiz.slimechunkhud.screen;
 
+
+
 import com.strefiz.slimechunkhud.config.ModConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
@@ -7,15 +9,15 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 
 /**
- * Ecrã simples de configuraçāo do mod. Permite ativar/desativar HUD, overlay e
- * modo notificaçāo.
+ * EcrÃ£ simples de configuraÃ§Äo do mod. Permite ativar/desativar HUD, overlay e
+ * modo notificaÃ§Äo.
  */
 public class ConfigScreen extends Screen {
 
     private final Screen parent;
 
     public ConfigScreen(Screen parent) {
-        super(Component.literal("Slime Chunk HUD — Configuraçāo"));
+        super(Component.literal("Slime Chunk HUD â€” ConfiguraÃ§Äo"));
         this.parent = parent;
     }
 
@@ -28,7 +30,7 @@ public class ConfigScreen extends Screen {
         int bw = 200;
         int bh = 20;
 
-        // Botão: alternar HUD
+        // BotÃ£o: alternar HUD
         addRenderableWidget(Button.builder(
                 Component.literal("HUD: " + (cfg.hudEnabled ? "ativado" : "desativado")),
                 btn -> {
@@ -39,7 +41,7 @@ public class ConfigScreen extends Screen {
                 .bounds(cx, cy, bw, bh).build());
         cy += bh + 6;
 
-        // Botão: alternar overlay de bordas
+        // BotÃ£o: alternar overlay de bordas
         addRenderableWidget(Button.builder(
                 Component.literal("Overlay bordas: " + (cfg.borderOverlayEnabled ? "ativado" : "desativado")),
                 btn -> {
@@ -50,19 +52,19 @@ public class ConfigScreen extends Screen {
                 .bounds(cx, cy, bw, bh).build());
         cy += bh + 6;
 
-        // Botão: alternar modo notificaçāo
+        // BotÃ£o: alternar modo notificaÃ§Äo
         addRenderableWidget(Button.builder(
-                Component.literal("Notificaçāo: " + (cfg.notificationMode ? "ativada" : "desativada")),
+                Component.literal("NotificaÃ§Äo: " + (cfg.notificationMode ? "ativada" : "desativada")),
                 btn -> {
                     cfg.notificationMode = !cfg.notificationMode;
                     ModConfig.save();
-                    btn.setMessage(Component.literal("Notificaçāo: " + (cfg.notificationMode ? "ativada" : "desativada")));
+                    btn.setMessage(Component.literal("NotificaÃ§Äo: " + (cfg.notificationMode ? "ativada" : "desativada")));
                 })
                 .bounds(cx, cy, bw, bh).build());
         cy += bh + 6;
 
         addRenderableWidget(Button.builder(
-                Component.literal("Concluído"),
+                Component.literal("ConcluÃ­do"),
                 btn -> Minecraft.getInstance().setScreenAndShow(this.parent))
                 .bounds(cx, cy, bw, bh).build());
     }
@@ -73,3 +75,4 @@ public class ConfigScreen extends Screen {
         Minecraft.getInstance().setScreenAndShow(this.parent);
     }
 }
+

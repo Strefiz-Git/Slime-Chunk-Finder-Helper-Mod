@@ -1,13 +1,15 @@
 package com.strefiz.slimechunkhud.hud;
 
+
+
 import com.strefiz.slimechunkhud.seed.SeedProvider;
 import net.minecraft.client.Minecraft;
 /**
  * Rastreador leve que deteta quando o jogador entra numa slime chunk.
  * <p>
  * Compara o estado da chunk atual com o estado do tick anterior para produzir
- * um evento de "entrada" (transiçāo de nāo-slime → slime), usado pela
- * notificaçāo acima da hotbar.
+ * um evento de "entrada" (transiÃ§Äo de nÄo-slime â†’ slime), usado pela
+ * notificaÃ§Äo acima da hotbar.
  */
 public class SlimeChunkStateTracker {
 
@@ -20,7 +22,7 @@ public class SlimeChunkStateTracker {
 
     /**
      * Chama a cada tick. Retorna {@code true} apenas no tick em que o jogador
-     * entra numa slime chunk (transiçāo de fora para dentro).
+     * entra numa slime chunk (transiÃ§Äo de fora para dentro).
      *
      * @return {@code true} se entrou numa slime chunk neste tick.
      */
@@ -32,12 +34,12 @@ public class SlimeChunkStateTracker {
         return entered;
     }
 
-    /** {@code true} se o jogador estā atualmente numa slime chunk. */
+    /** {@code true} se o jogador estÄ atualmente numa slime chunk. */
     public boolean isInSlimeChunk() {
         return wasInSlimeChunk;
     }
 
-    /** Reinicia o rastreador (útil ao trocar de mundo). */
+    /** Reinicia o rastreador (Ãºtil ao trocar de mundo). */
     public void reset() {
         wasInSlimeChunk = false;
     }
@@ -58,3 +60,4 @@ public class SlimeChunkStateTracker {
         return (int) Math.floor(client.player.getZ() / 16.0);
     }
 }
+

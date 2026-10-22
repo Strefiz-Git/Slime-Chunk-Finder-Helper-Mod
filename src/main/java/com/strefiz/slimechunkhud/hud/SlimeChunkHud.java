@@ -1,5 +1,7 @@
 package com.strefiz.slimechunkhud.hud;
 
+
+
 import com.strefiz.slimechunkhud.config.ModConfig;
 import com.strefiz.slimechunkhud.seed.SeedProvider;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElement;
@@ -10,10 +12,10 @@ import net.minecraft.client.gui.GuiGraphicsExtractor;
 
 import net.minecraft.network.chat.Component;
 /**
- * Elemento de HUD que mostra se a chunk atual é slime chunk.
+ * Elemento de HUD que mostra se a chunk atual Ã© slime chunk.
  * <p>
- * Renderiza texto colorido (verde = sim, vermelho = nāo, amarelo = seed
- * desconhecida) posicionado conforme a âncora, offsets e escala da config.
+ * Renderiza texto colorido (verde = sim, vermelho = nÄo, amarelo = seed
+ * desconhecida) posicionado conforme a Ã¢ncora, offsets e escala da config.
  * Escondido fora da Overworld.
  */
 public class SlimeChunkHud implements HudElement {
@@ -43,7 +45,7 @@ public class SlimeChunkHud implements HudElement {
             return;
         }
 
-        // Só Overworld.
+        // SÃ³ Overworld.
         if (!seedProvider.isOverworld()) {
             return;
         }
@@ -61,7 +63,7 @@ public class SlimeChunkHud implements HudElement {
             text = "Slime Chunk: SIM";
             color = cfg.textColorSlime;
         } else {
-            text = "Slime Chunk: NÃO";
+            text = "Slime Chunk: NÃƒO";
             color = cfg.textColorNotSlime;
         }
 
@@ -69,7 +71,7 @@ public class SlimeChunkHud implements HudElement {
         int scaledHeight = graphics.guiHeight();
         int[] pos = position(scaledWidth, scaledHeight, font.width(text), font.lineHeight, cfg);
 
-        // Desenha o fundo e o texto na posição calculada.
+        // Desenha o fundo e o texto na posiÃ§Ã£o calculada.
         if (cfg.showBackground) {
             int bgWidth = font.width(text);
             int bgHeight = font.lineHeight;
@@ -80,7 +82,7 @@ public class SlimeChunkHud implements HudElement {
     }
 
     /**
-     * Calcula a posiçāo (x, y) do HUD com base na âncora e offsets.
+     * Calcula a posiÃ§Äo (x, y) do HUD com base na Ã¢ncora e offsets.
      * Retorna {@code [x, y]}.
      */
     private static int[] position(int screenW, int screenH, int textW, int textH,
@@ -117,3 +119,4 @@ public class SlimeChunkHud implements HudElement {
         ModConfig get();
     }
 }
+

@@ -10,6 +10,11 @@ base {
     archivesName = project.archives_base_name
 }
 
+loom {
+    // Sem splitEnvironmentSourceSets: todo o código em src/main/java.
+    // A distinção cliente/servidor é feita com @Environment(EnvType.CLIENT/SERVER).
+}
+
 repositories {
     mavenCentral()
     maven { url = 'https://maven.fabricmc.net/' }

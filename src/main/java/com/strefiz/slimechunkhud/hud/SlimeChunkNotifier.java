@@ -1,5 +1,7 @@
 package com.strefiz.slimechunkhud.hud;
 
+
+
 import com.strefiz.slimechunkhud.config.ModConfig;
 import com.strefiz.slimechunkhud.seed.SeedProvider;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElement;
@@ -9,7 +11,7 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 /**
- * Notificaçāo transitória renderizada acima da hotbar quando o jogador entra
+ * NotificaÃ§Äo transitÃ³ria renderizada acima da hotbar quando o jogador entra
  * numa slime chunk.
  */
 public class SlimeChunkNotifier implements HudElement {
@@ -26,10 +28,10 @@ public class SlimeChunkNotifier implements HudElement {
         this.tracker = tracker;
     }
 
-    /** Chama a cada tick para atualizar o estado da notificaçāo. */
+    /** Chama a cada tick para atualizar o estado da notificaÃ§Äo. */
     public void tick() {
-        // A notificaçāo fica visível enquanto o jogador estiver numa slime chunk.
-        // Não desaparece automaticamente; desaparece ao sair da slime chunk.
+        // A notificaÃ§Äo fica visÃ­vel enquanto o jogador estiver numa slime chunk.
+        // NÃ£o desaparece automaticamente; desaparece ao sair da slime chunk.
     }
 
     @Override
@@ -37,7 +39,7 @@ public class SlimeChunkNotifier implements HudElement {
         render(graphics);
     }
 
-    /** Desenha a notificaçāo. Chama de {@link #extractRenderState}. */
+    /** Desenha a notificaÃ§Äo. Chama de {@link #extractRenderState}. */
     public void render(GuiGraphicsExtractor graphics) {
         ModConfig cfg = config.get();
         if (!cfg.notificationMode) {
@@ -75,3 +77,4 @@ public class SlimeChunkNotifier implements HudElement {
         graphics.text(font, Component.literal(text), x + 4, y + 2, 0xFF00FF00, true);
     }
 }
+

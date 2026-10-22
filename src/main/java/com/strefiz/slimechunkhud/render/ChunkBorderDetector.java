@@ -1,24 +1,26 @@
 package com.strefiz.slimechunkhud.render;
 
+
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.debug.DebugScreenEntries;
 import net.minecraft.client.gui.components.debug.DebugScreenEntryList;
 
 /**
- * Estado da visualização de bordas de chunk (F3 + G).
+ * Estado da visualizaÃ§Ã£o de bordas de chunk (F3 + G).
  * <p>
- * Em Minecraft 26.3, a flag de chunk borders é armazenada em
+ * Em Minecraft 26.3, a flag de chunk borders Ã© armazenada em
  * {@code Minecraft.getInstance().debugEntries}, que pode ser consultado com
  * {@link DebugScreenEntries#CHUNK_BORDERS}.
  * <p>
- * Não é necessário Mixin: a flag é acessível diretamente via API pública.
+ * NÃ£o Ã© necessÃ¡rio Mixin: a flag Ã© acessÃ­vel diretamente via API pÃºblica.
  */
 public final class ChunkBorderDetector {
 
     private ChunkBorderDetector() {}
 
     /**
-     * Retorna {@code true} se a visualização de bordas de chunk (F3 + G) está ativa.
+     * Retorna {@code true} se a visualizaÃ§Ã£o de bordas de chunk (F3 + G) estÃ¡ ativa.
      */
     public static boolean chunkBordersActive() {
         try {
@@ -33,3 +35,4 @@ public final class ChunkBorderDetector {
         }
     }
 }
+
