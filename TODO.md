@@ -19,10 +19,10 @@
 
 ## Next
 
-- [ ] T-010 [P2] [S] ./gradlew runClient — testar in-game: HUD aparece, keybind cicla, notificação funciona, ecrã de config abre. ✅ (runClient BUILD SUCCESSFUL, mod carrega sem crash)
-- [ ] T-011 [P2] [S] Preencher README (descrição, features, getting started, seed em multiplayer). ✅
-- [ ] T-012 [P2] [S] Atualizar CHANGELOG.md com resumo do release. ✅
-- [ ] T-013 [P2] [S] git push para o repositório remoto.
+- [x] T-010 [P2] [S] ./gradlew runClient — testar in-game: mod carrega no MC 26.3 sem crash.
+- [x] T-011 [P2] [S] Preencher README (descrição, features, getting started, seed em multiplayer).
+- [x] T-012 [P2] [S] Atualizar CHANGELOG.md com resumo do release.
+- [x] T-013 [P2] [S] git push para o repositório remoto. ✅ (push origin main concluído)
 - [ ] T-014 [P3] [M] Mixin ativo para detecção F3 + G — acceptance: ChunkBorderFlagMixin aplicado sem crash em 26.3 (se houver alvo estável).
 - [ ] T-015 [P3] [S] Resource pack / shader compatibilidade do overlay — acceptance: overlay não crasha com shaders.
 
