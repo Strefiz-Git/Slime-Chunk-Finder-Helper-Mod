@@ -1,7 +1,5 @@
 package com.strefiz.slimechunkhud.hud;
 
-
-
 import com.strefiz.slimechunkhud.config.ModConfig;
 import com.strefiz.slimechunkhud.seed.SeedProvider;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElement;
@@ -10,15 +8,19 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
+
 /**
- * NotificaÃ§Äo transitÃ³ria renderizada acima da hotbar quando o jogador entra
+ * Notificação transitória renderizada acima da hotbar quando o jogador entra
  * numa slime chunk.
+ * <p>
+ * A notificação aparece por alguns segundos ao ENTRAR na slime chunk.
  */
 public class SlimeChunkNotifier implements HudElement {
 
     private final SeedProvider seedProvider;
     private final ModConfig.Supplier config;
     private final SlimeChunkStateTracker tracker;
+    private int notificationTicksLeft = 0;
 
     public SlimeChunkNotifier(SeedProvider seedProvider,
                               ModConfig.Supplier config,
@@ -28,10 +30,22 @@ public class SlimeChunkNotifier implements HudElement {
         this.tracker = tracker;
     }
 
-    /** Chama a cada tick para atualizar o estado da notificaÃ§Äo. */
+    /** Chama a cada tick para atualizar o estado da notificação. */
     public void tick() {
-        // A notificaÃ§Äo fica visÃ­vel enquanto o jogador estiver numa slime chunk.
-        // NÃ£o desaparece automaticamente; desaparece ao sair da slime chunk.
+        ModConfig cfg = config.get();
+        if (!cfg.notificationMode || !cfg.notifyOnEnterSlimeChunk) {
+            notificationTicksLeft = 0;
+            return;
+        }
+
+        // Verifica se entrou numa slime chunk neste tick
+        if (tracker.tick()) {
+            notificationTicksLeft = 60; // ~3 segundos a 20 tps
+        }
+
+        if (notificationTicksLeft > 0) {
+            notificationTicksLeft--;
+        }
     }
 
     @Override
@@ -39,14 +53,10 @@ public class SlimeChunkNotifier implements HudElement {
         render(graphics);
     }
 
-    /** Desenha a notificaÃ§Äo. Chama de {@link #extractRenderState}. */
+    /** Desenha a notificação. Chama de {@link #extractRenderState}. */
     public void render(GuiGraphicsExtractor graphics) {
         ModConfig cfg = config.get();
-        if (!cfg.notificationMode) {
-            return;
-        }
-
-        if (!tracker.isInSlimeChunk()) {
+        if (!cfg.notificationMode || notificationTicksLeft <= 0) {
             return;
         }
 
@@ -55,10 +65,6 @@ public class SlimeChunkNotifier implements HudElement {
             return;
         }
         if (!seedProvider.isOverworld() || !seedProvider.hasSeed()) {
-            return;
-        }
-
-        if (!tracker.isInSlimeChunk()) {
             return;
         }
 
@@ -77,4 +83,3 @@ public class SlimeChunkNotifier implements HudElement {
         graphics.text(font, Component.literal(text), x + 4, y + 2, 0xFF00FF00, true);
     }
 }
-

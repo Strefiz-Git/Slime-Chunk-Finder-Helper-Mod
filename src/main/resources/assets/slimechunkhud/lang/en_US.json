@@ -1,6 +1,6 @@
 {
   "key.categories.slimechunkhud": "Slime Chunk HUD",
-  "key.slimechunkhud.toggle_mode": "Toggle HUD Mode",
+  "key.slimechunkhud.toggle_mode": "Toggle Slime Chunk HUD",
   "slimechunkhud.hud.slime": "Slime Chunk: YES",
   "slimechunkhud.hud.not_slime": "Slime Chunk: NO",
   "slimechunkhud.hud.unknown_seed": "Slime Chunk: unknown seed",
