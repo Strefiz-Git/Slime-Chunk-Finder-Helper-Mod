@@ -38,3 +38,10 @@ coverage/
 *.log
 .godot/
 .import/
+
+# Java / Gradle
+.gradle/
+run/
+*.class
+*.jar
+!src/main/resources/fabric.mod.json

@@ -1,0 +1,123 @@
+package com.strefiz.slimechunkhud.config;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.annotations.SerializedName;
+import net.minecraft.client.MinecraftClient;
+
+import java.io.IOException;
+import java.io.Reader;
+import java.io.Writer;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Objects;
+
+/**
+ * Persistência da configuraçāo em {@code config/slimechunkhud.json} (Gson).
+ * <p>
+ * As sementes de multiplayer sāo guardadas por servidor (chave = endereço).
+ */
+public final class ModConfig {
+
+    private static final Path CONFIG_DIR = MinecraftClient.getInstance().gameDir.resolve("config");
+    private static final Path CONFIG_FILE = CONFIG_DIR.resolve("slimechunkhud.json");
+    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+
+    private static ModConfig instance;
+
+    @SerializedName("hudEnabled")
+    public boolean hudEnabled = true;
+
+    @SerializedName("hudAnchor")
+    public HudAnchor hudAnchor = HudAnchor.TOP_LEFT;
+
+    @SerializedName("hudOffsetX")
+    public int hudOffsetX = 10;
+
+    @SerializedName("hudOffsetY")
+    public int hudOffsetY = 10;
+
+    @SerializedName("hudScale")
+    public float hudScale = 1.0f;
+
+    @SerializedName("showBackground")
+    public boolean showBackground = true;
+
+    @SerializedName("textColorSlime")
+    public int textColorSlime = 0xFF00FF00; // verde
+
+    @SerializedName("textColorNotSlime")
+    public int textColorNotSlime = 0xFFFF5555; // vermelho
+
+    @SerializedName("textColorUnknown")
+    public int textColorUnknown = 0xFFFFFF00; // amarelo
+
+    @SerializedName("borderOverlayEnabled")
+    public boolean borderOverlayEnabled = true;
+
+    @SerializedName("slimeBorderColor")
+    public int slimeBorderColor = 0x00FF00; // verde
+
+    @SerializedName("borderOpacity")
+    public float borderOpacity = 0.5f;
+
+    @SerializedName("overlayRadius")
+    public int overlayRadius = 6; // chunks em volta do jogador
+
+    @SerializedName("serverSeeds")
+    public Map<String, Long> serverSeeds = new LinkedHashMap<>();
+
+    private ModConfig() {}
+
+    public static ModConfig get() {
+        if (instance == null) {
+            instance = load();
+        }
+        return instance;
+    }
+
+    public static ModConfig load() {
+        try {
+            Files.createDirectories(CONFIG_DIR);
+            if (Files.exists(CONFIG_FILE)) {
+                try (Reader reader = Files.newBufferedReader(CONFIG_FILE)) {
+                    ModConfig cfg = GSON.fromJson(reader, ModConfig.class);
+                    if (cfg != null) {
+                        instance = cfg;
+                        return instance;
+                    }
+                }
+            }
+        } catch (IOException e) {
+            // Falha ao ler config: usa padrões.
+            e.printStackTrace();
+        }
+        instance = new ModConfig();
+        return instance;
+    }
+
+    public static void save() {
+        ModConfig cfg = get();
+        try {
+            Files.createDirectories(CONFIG_DIR);
+            try (Writer writer = Files.newBufferedWriter(CONFIG_FILE)) {
+                GSON.toJson(cfg, writer);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /** Ăancoras possíveis para o HUD. */
+    public enum HudAnchor {
+        TOP_LEFT, TOP_CENTER, TOP_RIGHT,
+        MIDDLE_LEFT, MIDDLE_RIGHT,
+        BOTTOM_LEFT, BOTTOM_CENTER, BOTTOM_RIGHT
+    }
+
+    public static void resetForTests() {
+        instance = null;
+    }
+}

@@ -14,11 +14,11 @@
 
 | Action | Command |
 |--------|---------|
-| Install dependencies | `TODO` |
-| Run | `TODO` |
-| Build | `TODO` |
-| Tests | `TODO` |
-| Lint / format | `TODO` |
+| Install dependencies | `TODO` (Instalar Gradle; `gradle.properties` tem versões de Fabric/MC 26.x como suposição — pinar antes de buildar) |
+| Run | `./gradlew runClient` (após instalar Gradle e pinar versões; exige internet para baixar deps) |
+| Build | `./gradlew build` |
+| Tests | `./gradlew test` |
+| Lint / format | `TODO` (nenhum linter configurado ainda) |
 | Full verification | `bash scripts/check.sh` |
 
 ## 2. Startup ritual (mandatory, in this order)

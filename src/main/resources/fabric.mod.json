@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "id": "${mod_id}",
+  "version": "${version}",
+  "name": "${mod_name}",
+  "description": "${mod_description}",
+  "authors": [
+    "Strefiz"
+  ],
+  "contact": {},
+  "license": "MIT",
+  "icon": "assets/slimechunkhud/icon.png",
+
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "com.strefiz.slimechunkhud.SlimeChunkHudMod"
+    ]
+  },
+
+  "mixins": [
+    "slimechunkhud.mixins.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.16.0",
+    "minecraft": "~26.3",
+    "java": ">=21",
+    "fabric-api": "*"
+  },
+
+  "suggests": {
+    "modmenu": "*"
+  },
+
+  "custom": {
+    "modmenu:screen": {
+      "class": "com.strefiz.slimechunkhud.screen.ModMenuScreenFactory"
+    }
+  }
+}

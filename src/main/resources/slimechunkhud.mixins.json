@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "minVersion": "0.16.0",
+  "package": "com.strefiz.slimechunkhud.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    // "ChunkBorderFlagMixin"  // ATIVAR SÓ APÓS confirmar a classe/campo alvo em 26.3
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
