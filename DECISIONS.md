@@ -69,6 +69,14 @@
 - **Assumptions:** Fabric API + Loom versions in gradle.properties are placeholders.
 - **How to revert:** edit `gradle.properties`/`build.gradle` versions.
 
+### D-009 — Seed: cliente-only, seed manual por servidor, sem encriptação  (2026-10-22) — Accepted
+- **Context:** O utilizador quer o mod para pessoas gerais. Em servidores vanilla, o servidor nunca envia a seed ao cliente (só um hash parcial). A seed tem de ser introduzida manualmente via /slimeseed <seed>. O utilizador não quer encriptação complexa nem servidor companheiro por agora; basta que o mod funcione em servidores vanilla com seed manual.
+- **Options:** A) Manter cliente-only, seed manual por servidor, sem encriptação. B) Encriptar a seed entre cliente e servidor. C) Servidor companheiro que envia slime chunks (não a seed).
+- **Analysis:** A encriptação não protege a seed de quem controla o cliente (código é MIT e público; a seed está na memória). Um servidor companheiro é a Fase 2 opcional. A opção A é a mais simples e honesta: diz ao utilizador que a seed é introduzida à mão.
+- **Decision:** A — cliente-only, seed manual por servidor via /slimeseed, guardada em config/slimechunkhud.json. Sem encriptação própria. Fase 2 (opcional): servidor companheiro envia slime chunks próximas (padrão RocketWithSpearMod: ClientPlayNetworking.canSend + payload), sem enviar a seed.
+- **Assumptions:** Utilizador aceita introduzir a seed à mão em servidores vanilla.
+- **How to revert:** adicionar encriptação ou servidor companheiro mais tarde.
+
 ### D-008 — Gradle/Loom version compatibility (resolved)  (2026-10-22) — Accepted
 - **Context:** Loom 1.14.10 required Gradle 9.2.0+, but only Gradle 9.0.0 was available for direct download (9.2+ returned 404).
 - **Options:** A) copy wrapper + build config from a mod that already compiles on this machine. B) find alternative Gradle 9.2+ source. C) wait.

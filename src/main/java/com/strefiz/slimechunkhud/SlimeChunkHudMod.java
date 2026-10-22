@@ -70,11 +70,29 @@ public class SlimeChunkHudMod implements ClientModInitializer {
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
             dispatcher.register(
                     net.fabricmc.fabric.api.client.command.v2.ClientCommands.literal("slimeseed")
-                            .executes(context -> {
-                                context.getSource().sendFeedback(
-                                        Component.literal("Uso: /slimeseed <seed> (número inteiro)"));
-                                return 0;
-                            })
+                            .then(net.fabricmc.fabric.api.client.command.v2.ClientCommands.argument("seed",
+                                    net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.greedyString())
+                                    .executes(context -> {
+                                        String arg = context.getInput().trim();
+                                        int idx = arg.indexOf(' ');
+                                        if (idx < 0) {
+                                            context.getSource().sendFeedback(
+                                                    Component.literal("Uso: /slimeseed <seed> (número inteiro)"));
+                                            return 0;
+                                        }
+                                        try {
+                                            long seed = Long.parseLong(arg.substring(idx + 1).trim());
+                                            seedProvider.setCurrentServerSeed(seed);
+                                            context.getSource().sendFeedback(
+                                                    Component.literal("Seed do slime chunk definida para: " + seed));
+                                            return 1;
+                                        } catch (NumberFormatException e) {
+                                            context.getSource().sendFeedback(
+                                                    Component.literal("Uso: /slimeseed <seed> (número inteiro)"));
+                                            return 0;
+                                        }
+                                    })
+                            )
             );
         });
 
@@ -84,12 +102,12 @@ public class SlimeChunkHudMod implements ClientModInitializer {
             boolean overworld = level != null && isOverworld(level);
             seedProvider.setDimensionOverworld(overworld);
 
-            tracker.tick();
             notifier.tick();
 
             // Reset ao trocar de mundo/dimensão.
             if (!overworld) {
                 tracker.reset();
+                seedProvider.reset();
             }
 
             // Singleplayer: tentar obter a seed do servidor integrado.
