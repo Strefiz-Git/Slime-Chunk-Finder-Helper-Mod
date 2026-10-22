@@ -15,6 +15,9 @@
   "entrypoints": {
     "client": [
       "com.strefiz.slimechunkhud.SlimeChunkHudMod"
+    ],
+    "modmenu": [
+      "com.strefiz.slimechunkhud.screen.ModMenuIntegration"
     ]
   },
 

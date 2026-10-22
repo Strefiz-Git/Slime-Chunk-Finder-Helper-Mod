@@ -17,7 +17,6 @@ public class SlimeChunkNotifier implements HudElement {
     private final SeedProvider seedProvider;
     private final ModConfig.Supplier config;
     private final SlimeChunkStateTracker tracker;
-    private int notificationTicksLeft = 0;
 
     public SlimeChunkNotifier(SeedProvider seedProvider,
                               ModConfig.Supplier config,
@@ -29,19 +28,8 @@ public class SlimeChunkNotifier implements HudElement {
 
     /** Chama a cada tick para atualizar o estado da notificaçāo. */
     public void tick() {
-        ModConfig cfg = config.get();
-        if (!cfg.notificationMode || !cfg.notifyOnEnterSlimeChunk) {
-            notificationTicksLeft = 0;
-            return;
-        }
-
-        if (tracker.tick()) {
-            notificationTicksLeft = 40; // ~2 segundos a 20 tps
-        }
-
-        if (notificationTicksLeft > 0) {
-            notificationTicksLeft--;
-        }
+        // A notificaçāo fica visível enquanto o jogador estiver numa slime chunk.
+        // Não desaparece automaticamente; desaparece ao sair da slime chunk.
     }
 
     @Override
@@ -52,7 +40,11 @@ public class SlimeChunkNotifier implements HudElement {
     /** Desenha a notificaçāo. Chama de {@link #extractRenderState}. */
     public void render(GuiGraphicsExtractor graphics) {
         ModConfig cfg = config.get();
-        if (!cfg.notificationMode || notificationTicksLeft <= 0) {
+        if (!cfg.notificationMode) {
+            return;
+        }
+
+        if (!tracker.isInSlimeChunk()) {
             return;
         }
 
@@ -77,11 +69,9 @@ public class SlimeChunkNotifier implements HudElement {
         int x = (scaledWidth - width) / 2;
         int y = scaledHeight - 40;
 
-        if (notificationTicksLeft > 0) {
-            int bgWidth = width + 8;
-            int bgHeight = font.lineHeight + 4;
-            graphics.fill(x, y, x + bgWidth, y + bgHeight, 0xA0000000);
-            graphics.text(font, Component.literal(text), x + 4, y + 2, 0xFF00FF00, true);
-        }
+        int bgWidth = width + 8;
+        int bgHeight = font.lineHeight + 4;
+        graphics.fill(x, y, x + bgWidth, y + bgHeight, 0xA0000000);
+        graphics.text(font, Component.literal(text), x + 4, y + 2, 0xFF00FF00, true);
     }
 }
