@@ -1,0 +1,14 @@
+{
+  "key.categories.slimechunkhud": "Slime Chunk HUD",
+  "key.slimechunkhud.toggle_mode": "Alternar modo HUD",
+  "slimechunkhud.hud.slime": "Slime Chunk: SIM",
+  "slimechunkhud.hud.not_slime": "Slime Chunk: NÃO",
+  "slimechunkhud.hud.unknown_seed": "Slime Chunk: seed desconhecida",
+  "slimechunkhud.notification.title": "SLIME CHUNK!",
+  "slimechunkhud.config.title": "Slime Chunk HUD — Configuração",
+  "slimechunkhud.config.done": "Concluído",
+  "slimechunkhud.config.set_seed": "Definir seed",
+  "slimechunkhud.config.server_seed": "Seed do servidor",
+  "slimechunkhud.command.slimeseed.usage": "Uso: /slimeseed <seed> (número inteiro)",
+  "slimechunkhud.command.slimeseed.set": "Seed do slime chunk definida para: %s"
+}

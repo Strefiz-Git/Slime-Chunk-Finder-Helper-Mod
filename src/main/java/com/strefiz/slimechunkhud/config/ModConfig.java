@@ -98,8 +98,8 @@ public final class ModConfig {
                     }
                 }
             }
-        } catch (IOException e) {
-            // Falha ao ler config: usa padrões.
+        } catch (IOException | RuntimeException e) {
+            // Falha ao ler config (incluindo JSON corrompido): usa padrões.
             e.printStackTrace();
         }
         instance = new ModConfig();

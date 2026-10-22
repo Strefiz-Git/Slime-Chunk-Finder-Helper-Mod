@@ -80,8 +80,8 @@ public class SlimeChunkNotifier implements HudElement {
         if (notificationTicksLeft > 0) {
             int bgWidth = width + 8;
             int bgHeight = font.lineHeight + 4;
-            graphics.fill(0, 0, bgWidth, bgHeight, 0xA0000000);
-            graphics.text(font, Component.literal(text), 4, 2, 0xFF00FF00, true);
+            graphics.fill(x, y, x + bgWidth, y + bgHeight, 0xA0000000);
+            graphics.text(font, Component.literal(text), x + 4, y + 2, 0xFF00FF00, true);
         }
     }
 }

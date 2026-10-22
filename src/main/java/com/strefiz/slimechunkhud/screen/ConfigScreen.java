@@ -14,7 +14,7 @@ public class ConfigScreen extends Screen {
 
     private final Screen parent;
 
-    protected ConfigScreen(Screen parent) {
+    public ConfigScreen(Screen parent) {
         super(Component.literal("Slime Chunk HUD — Configuraçāo"));
         this.parent = parent;
     }

@@ -27,5 +27,11 @@
 
   "suggests": {
     "modmenu": "*"
+  },
+
+  "custom": {
+    "modmenu:screen": {
+      "class": "com.strefiz.slimechunkhud.screen.ModMenuScreenFactory"
+    }
   }
 }

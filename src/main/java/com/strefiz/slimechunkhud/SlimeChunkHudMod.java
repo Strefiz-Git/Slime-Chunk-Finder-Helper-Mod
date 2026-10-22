@@ -70,14 +70,18 @@ public class SlimeChunkHudMod implements ClientModInitializer {
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
             dispatcher.register(
                     net.fabricmc.fabric.api.client.command.v2.ClientCommands.literal("slimeseed")
-                            .then(net.fabricmc.fabric.api.client.command.v2.ClientCommands.argument("seed",
-                                    net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.greedyString())
+                            .executes(context -> {
+                                context.getSource().sendFeedback(
+                                        Component.literal("Uso: /slimeseed <seed> (número inteiro). Use /slimeseed seed <valor> para definir."));
+                                return 0;
+                            })
+                            .then(net.fabricmc.fabric.api.client.command.v2.ClientCommands.literal("seed")
                                     .executes(context -> {
                                         String arg = context.getInput().trim();
                                         int idx = arg.indexOf(' ');
                                         if (idx < 0) {
                                             context.getSource().sendFeedback(
-                                                    Component.literal("Uso: /slimeseed <seed> (número inteiro)"));
+                                                    Component.literal("Uso: /slimeseed seed <valor>"));
                                             return 0;
                                         }
                                         try {
@@ -88,11 +92,10 @@ public class SlimeChunkHudMod implements ClientModInitializer {
                                             return 1;
                                         } catch (NumberFormatException e) {
                                             context.getSource().sendFeedback(
-                                                    Component.literal("Uso: /slimeseed <seed> (número inteiro)"));
+                                                    Component.literal("Uso: /slimeseed seed <valor> (número inteiro)"));
                                             return 0;
                                         }
-                                    })
-                            )
+                                    }))
             );
         });
 

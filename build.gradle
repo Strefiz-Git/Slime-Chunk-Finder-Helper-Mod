@@ -13,6 +13,10 @@ base {
 repositories {
     mavenCentral()
     maven { url = 'https://maven.fabricmc.net/' }
+    maven {
+        name = "TerraformersMC"
+        url = "https://maven.terraformersmc.com/"
+    }
 }
 
 dependencies {
@@ -23,6 +27,10 @@ dependencies {
 
     // Gson for config persistence (bundled with Fabric API / Minecraft).
     implementation 'com.google.code.gson:gson:2.11.0'
+
+    // Mod Menu - only for development/compile, never a hard dependency.
+    compileOnly "com.terraformersmc:modmenu:21.0.0"
+    localRuntime "com.terraformersmc:modmenu:21.0.0"
 
     // Unit tests
     testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'

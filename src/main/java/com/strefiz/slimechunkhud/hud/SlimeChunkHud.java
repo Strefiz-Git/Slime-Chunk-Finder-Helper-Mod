@@ -7,6 +7,7 @@ import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
+
 import net.minecraft.network.chat.Component;
 /**
  * Elemento de HUD que mostra se a chunk atual é slime chunk.
@@ -68,19 +69,14 @@ public class SlimeChunkHud implements HudElement {
         int scaledHeight = graphics.guiHeight();
         int[] pos = position(scaledWidth, scaledHeight, font.width(text), font.lineHeight, cfg);
 
-        // Aplica escala via matriz de transformação.
-        graphics.pushPose();
-        graphics.translate(pos[0], pos[1], 0);
-        graphics.scale(cfg.hudScale, cfg.hudScale, 1.0f);
-
+        // Desenha o fundo e o texto na posição calculada.
         if (cfg.showBackground) {
             int bgWidth = font.width(text);
             int bgHeight = font.lineHeight;
-            graphics.fill(0, 0, bgWidth, bgHeight, 0x80000000);
+            graphics.fill(pos[0], pos[1], pos[0] + bgWidth, pos[1] + bgHeight, 0x80000000);
         }
 
-        graphics.text(font, Component.literal(text), 0, 0, color, true);
-        graphics.popPose();
+        graphics.text(font, Component.literal(text), pos[0], pos[1], color, true);
     }
 
     /**

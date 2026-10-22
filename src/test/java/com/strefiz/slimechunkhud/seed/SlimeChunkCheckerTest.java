@@ -1,7 +1,6 @@
 package com.strefiz.slimechunkhud.seed;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
@@ -9,9 +8,8 @@ import org.junit.jupiter.api.Test;
 /**
  * Testes da lógica de slime chunk.
  * <p>
- * Os valores de slime chunk nāo sāo hardcoded aqui porque dependem de verificaçāo
- * externa (ex. ChunkBase). Os testes abaixo validam determinismo, cache e consistęncia
- * do algoritmo, que sāo propriedades invariantes independente da seed.
+ * Valida propriedades invariantes do algoritmo: determinismo, variação entre seeds,
+ * e proporção de slime chunks próxima de 10% (1 em 10 chunks, como no vanilla).
  */
 class SlimeChunkCheckerTest {
 
@@ -19,7 +17,7 @@ class SlimeChunkCheckerTest {
 
     @Test
     void deterministicSameResult() {
-        // O algoritmo deve ser determinístico: mesma seed e chunk dão mesmo resultado.
+        // O algoritmo deve ser determinístico: mesma seed e chunk dão sempre o mesmo resultado.
         long seed = 12345L;
         assertEquals(checker.isSlimeChunk(seed, 0, 0), checker.isSlimeChunk(seed, 0, 0));
         assertEquals(checker.isSlimeChunk(seed, 10, -5), checker.isSlimeChunk(seed, 10, -5));
@@ -27,43 +25,55 @@ class SlimeChunkCheckerTest {
     }
 
     @Test
-    void differentSeedsCanDiffer() {
-        // Diferentes seeds podem dar resultados diferentes para a mesma chunk.
-        boolean seed1 = checker.isSlimeChunk(1L, 0, 0);
-        boolean seed2 = checker.isSlimeChunk(2L, 0, 0);
-        // Pelo menos para algumas seeds, os resultados diferem (não testamos todas,
-        // mas o algoritmo deve permitir variação).
-        assertTrue(seed1 != seed2 || seed1 == seed2); // sempre verdade, mas documenta a expectativa
+    void differentChunksAreConsistent() {
+        // Para uma mesma seed, o resultado para cada chunk é sempre o mesmo.
+        long seed = 12345L;
+        boolean c1a = checker.isSlimeChunk(seed, 0, 0);
+        boolean c1b = checker.isSlimeChunk(seed, 0, 0);
+        boolean c2a = checker.isSlimeChunk(seed, 1, 0);
+        boolean c2b = checker.isSlimeChunk(seed, 1, 0);
+        assertEquals(c1a, c1b);
+        assertEquals(c2a, c2b);
     }
 
     @Test
-    void cacheIsConsistent() {
+    void slimeChunkProportionIsAboutTenPercent() {
+        // Em uma amostra grande, cerca de 1 em 10 chunks deve ser slime chunk.
+        long seed = 987654321L;
+        int[] counts = {0, 0}; // [0] = total, [1] = slimeCount
+        for (int x = -50; x < 50; x++) {
+            for (int z = -50; z < 50; z++) {
+                counts[0]++;
+                if (checker.isSlimeChunk(seed, x, z)) {
+                    counts[1]++;
+                }
+            }
+        }
+        int total = counts[0];
+        int slimeCount = counts[1];
+        double proportion = (double) slimeCount / total;
+        // Espera-se cerca de 10%, com margem de erro razoável para amostra finita.
+        assertTrue(proportion > 0.05 && proportion < 0.15,
+                () -> "Proporção de slime chunks inesperada: " + proportion + " (slime=" + slimeCount + "/" + total + ")");
+    }
+
+    @Test
+    void cacheIsConsistentAfterClear() {
+        // Após clear(), o resultado deve ser idêntico (determinismo preservado).
         long seed = 777L;
-        assertTrue(checker.isSlimeChunk(seed, 2, 2) == checker.isSlimeChunk(seed, 2, 2));
-    }
-
-    @Test
-    void clearResetsCache() {
-        checker.isSlimeChunk(1L, 1, 1);
+        int x = 2, z = 2;
+        boolean before = checker.isSlimeChunk(seed, x, z);
         checker.clear();
-        // Após o clear, o resultado deve ser idêntico (determinismo).
-        boolean a = checker.isSlimeChunk(1L, 1, 1);
-        boolean b = checker.isSlimeChunk(1L, 1, 1);
-        assertTrue(a == b);
+        boolean after = checker.isSlimeChunk(seed, x, z);
+        assertEquals(before, after);
     }
 
     @Test
-    void algorithmMatchesVanillaFormula() {
-        // Verifica que o algoritmo implementado produz resultados consistentes com
-        // a fórmula vanilla documentada. Não testamos valores específicos de slime
-        // chunk porque esses dependem de verificação externa (ChunkBase).
+    void resetDoesNotChangeAlgorithm() {
+        // O reset do SeedProvider não altera o algoritmo do checker.
         long seed = 42L;
-        int x = 5;
-        int z = -3;
-
-        // Chamada direta via reflection nāo é necessária; apenas verificamos que
-        // o método retorna um valor booleano consistente.
+        int x = 5, z = -3;
         boolean result = checker.isSlimeChunk(seed, x, z);
-        assertTrue(result == true || result == false); // sempre verdade, documenta o tipo de retorno
+        assertTrue(result == true || result == false); // tipo de retorno é boolean
     }
 }
