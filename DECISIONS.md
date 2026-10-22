@@ -69,12 +69,12 @@
 - **Assumptions:** Fabric API + Loom versions in gradle.properties are placeholders.
 - **How to revert:** edit `gradle.properties`/`build.gradle` versions.
 
-### D-008 — Gradle/Loom version compatibility (blocked)  (2026-10-22) — Accepted
-- **Context:** Loom 1.14.10 (latest stable compatible with Java 21) requires Gradle 9.2.0+ (plugin.api-version 9.2.0). Only Gradle 9.0.0 is available for direct download; 9.2+ returns 404 from services.gradle.org.
-- **Options:** A) install Gradle 9.2+ via alternative source (SDKMAN, mirror, GitHub release). B) use an older Loom version compatible with Gradle 9.0. C) wait for Gradle 9.2+ to be published.
-- **Analysis:** precedent: Fabric template uses Loom 1.18-SNAPSHOT (requires Gradle 9.7+). intent: make `./gradlew build` work. risk: Loom versions older than 1.14 may not exist or lack MC 26.3 support. simplicity: A is the only viable path.
-- **Decision:** A — user must install Gradle 9.2+ (or newer) before `./gradlew build`/`genSources` can run. Wrapper is set to Gradle 9.0.0 as a placeholder.
-- **Assumptions:** Gradle 9.2+ exists but isn't directly downloadable from services.gradle.org.
-- **How to revert:** change `gradle/wrapper/gradle-wrapper.properties` distributionUrl to a different Gradle version.
+### D-008 — Gradle/Loom version compatibility (resolved)  (2026-10-22) — Accepted
+- **Context:** Loom 1.14.10 required Gradle 9.2.0+, but only Gradle 9.0.0 was available for direct download (9.2+ returned 404).
+- **Options:** A) copy wrapper + build config from a mod that already compiles on this machine. B) find alternative Gradle 9.2+ source. C) wait.
+- **Analysis:** precedent: Minecraft-MultyCore-Mod on this machine uses Gradle 9.8.0 + Loom 1.17-SNAPSHOT + Fabric API 0.160.5+26.3 + Java 25 and compiles. intent: make `./gradlew build` work. simplicity: A.
+- **Decision:** A — copied wrapper (gradlew, gradlew.bat, gradle/wrapper/*) from Minecraft-MultyCore-Mod; aligned gradle.properties/build.gradle with the working mod. Build now passes with `./gradlew build` and `./gradlew test`.
+- **Assumptions:** The wrapper from the working mod is compatible with this project's build.gradle.
+- **How to revert:** replace gradle/wrapper/ with a different Gradle version if needed.
 
 
