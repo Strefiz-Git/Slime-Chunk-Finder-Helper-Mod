@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "id": "${mod_id}",
-  "version": "${version}",
-  "name": "${mod_name}",
-  "description": "${mod_description}",
+  "id": "slimechunkhud",
+  "version": "1.0.0",
+  "name": "Slime Chunk Finder Helper Mod",
+  "description": "Client-side HUD + green chunk-border overlay for slime chunks (Fabric)",
   "authors": [
     "Strefiz"
   ],

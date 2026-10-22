@@ -125,6 +125,12 @@ public final class ModConfig {
         BOTTOM_LEFT, BOTTOM_CENTER, BOTTOM_RIGHT
     }
 
+    /** Fornece a config atual (permite reler a cada frame sem reiniciar). */
+    @FunctionalInterface
+    public interface Supplier {
+        ModConfig get();
+    }
+
     public static void resetForTests() {
         instance = null;
     }

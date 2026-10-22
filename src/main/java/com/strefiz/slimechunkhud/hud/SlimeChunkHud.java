@@ -2,15 +2,12 @@ package com.strefiz.slimechunkhud.hud;
 
 import com.strefiz.slimechunkhud.config.ModConfig;
 import com.strefiz.slimechunkhud.seed.SeedProvider;
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElement;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
-import net.minecraft.util.MathHelper;
-
 /**
  * Elemento de HUD que mostra se a chunk atual é slime chunk.
  * <p>
@@ -51,8 +48,8 @@ public class SlimeChunkHud implements HudElement {
         }
 
         Font font = client.font;
-        int chunkX = MathHelper.floor(client.player.getX() / 16.0);
-        int chunkZ = MathHelper.floor(client.player.getZ() / 16.0);
+        int chunkX = (int) Math.floor(client.player.getX() / 16.0);
+        int chunkZ = (int) Math.floor(client.player.getZ() / 16.0);
 
         String text;
         int color;
@@ -67,14 +64,9 @@ public class SlimeChunkHud implements HudElement {
             color = cfg.textColorNotSlime;
         }
 
-        int scaledWidth = client.getWindow().getGuiScaledWidth();
-        int scaledHeight = client.getWindow().getGuiScaledHeight();
+        int scaledWidth = graphics.guiWidth();
+        int scaledHeight = graphics.guiHeight();
         int[] pos = position(scaledWidth, scaledHeight, font.width(text), font.lineHeight, cfg);
-
-        PoseStack matrices = graphics.poseStack();
-        matrices.pushPose();
-        matrices.translate(pos[0], pos[1], 0);
-        matrices.scale(cfg.hudScale, cfg.hudScale, 1.0f);
 
         if (cfg.showBackground) {
             int bgWidth = font.width(text);

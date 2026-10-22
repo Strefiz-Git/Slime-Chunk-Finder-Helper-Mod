@@ -4,7 +4,6 @@ import com.strefiz.slimechunkhud.config.ModConfig;
 import com.strefiz.slimechunkhud.seed.SeedProvider;
 import net.fabricmc.fabric.api.client.rendering.v1.level.LevelRenderContext;
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.MathHelper;
 
 import java.util.function.Supplier;
 
@@ -42,8 +41,8 @@ public class SlimeChunkOverlay {
             return;
         }
 
-        int playerChunkX = MathHelper.floor(client.player.getX() / 16.0);
-        int playerChunkZ = MathHelper.floor(client.player.getZ() / 16.0);
+        int playerChunkX = (int) Math.floor(client.player.getX() / 16.0);
+        int playerChunkZ = (int) Math.floor(client.player.getZ() / 16.0);
         int radius = Math.max(1, cfg.overlayRadius);
 
         // TODO: confirmar a API exata de LevelRenderContext e buffer de vértices

@@ -2,15 +2,12 @@ package com.strefiz.slimechunkhud.hud;
 
 import com.strefiz.slimechunkhud.config.ModConfig;
 import com.strefiz.slimechunkhud.seed.SeedProvider;
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElement;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
-import net.minecraft.util.MathHelper;
-
 /**
  * Notificaçāo transitória renderizada acima da hotbar quando o jogador entra
  * numa slime chunk.
@@ -74,21 +71,17 @@ public class SlimeChunkNotifier implements HudElement {
         Font font = client.font;
         String text = "SLIME CHUNK!";
         int width = font.width(text);
-        int scaledWidth = client.getWindow().getGuiScaledWidth();
-        int scaledHeight = client.getWindow().getGuiScaledHeight();
+        int scaledWidth = graphics.guiWidth();
+        int scaledHeight = graphics.guiHeight();
 
         int x = (scaledWidth - width) / 2;
         int y = scaledHeight - 40;
 
-        PoseStack matrices = graphics.poseStack();
-        matrices.pushPose();
-        matrices.translate(x, y, 0);
-        matrices.scale(1.5f, 1.5f, 1.0f);
-
-        int bgWidth = width + 8;
-        int bgHeight = font.lineHeight + 4;
-        graphics.fill(0, 0, bgWidth, bgHeight, 0xA0000000);
-        graphics.text(font, Component.literal(text), 4, 2, 0xFF00FF00, true);
-        matrices.popPose();
+        if (notificationTicksLeft > 0) {
+            int bgWidth = width + 8;
+            int bgHeight = font.lineHeight + 4;
+            graphics.fill(0, 0, bgWidth, bgHeight, 0xA0000000);
+            graphics.text(font, Component.literal(text), 4, 2, 0xFF00FF00, true);
+        }
     }
 }

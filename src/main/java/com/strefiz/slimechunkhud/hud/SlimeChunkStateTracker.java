@@ -2,8 +2,6 @@ package com.strefiz.slimechunkhud.hud;
 
 import com.strefiz.slimechunkhud.seed.SeedProvider;
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.MathHelper;
-
 /**
  * Rastreador leve que deteta quando o jogador entra numa slime chunk.
  * <p>
@@ -49,7 +47,7 @@ public class SlimeChunkStateTracker {
         if (client.player == null) {
             return 0;
         }
-        return MathHelper.floor(client.player.getX() / 16.0);
+        return (int) Math.floor(client.player.getX() / 16.0);
     }
 
     private int currentChunkZ() {
@@ -57,6 +55,6 @@ public class SlimeChunkStateTracker {
         if (client.player == null) {
             return 0;
         }
-        return MathHelper.floor(client.player.getZ() / 16.0);
+        return (int) Math.floor(client.player.getZ() / 16.0);
     }
 }

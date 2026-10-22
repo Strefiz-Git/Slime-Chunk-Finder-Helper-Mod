@@ -6,7 +6,6 @@ import com.strefiz.slimechunkhud.hud.SlimeChunkNotifier;
 import com.strefiz.slimechunkhud.hud.SlimeChunkStateTracker;
 import com.strefiz.slimechunkhud.input.HudKeybind;
 import com.strefiz.slimechunkhud.render.SlimeChunkOverlay;
-
 import com.strefiz.slimechunkhud.seed.SeedProvider;
 
 import net.fabricmc.api.ClientModInitializer;
@@ -71,29 +70,11 @@ public class SlimeChunkHudMod implements ClientModInitializer {
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
             dispatcher.register(
                     net.fabricmc.fabric.api.client.command.v2.ClientCommands.literal("slimeseed")
-                            .then(net.fabricmc.fabric.api.client.command.v2.ClientCommands.argument("seed",
-                                    net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.greedyString())
-                                    .executes(context -> {
-                                        String arg = context.getInput().trim();
-                                        int idx = arg.indexOf(' ');
-                                        if (idx < 0) {
-                                            context.getSource().sendFeedback(
-                                                    Component.literal("Uso: /slimeseed <seed> (número inteiro)"), false);
-                                            return 0;
-                                        }
-                                        try {
-                                            long seed = Long.parseLong(arg.substring(idx + 1).trim());
-                                            seedProvider.setCurrentServerSeed(seed);
-                                            context.getSource().sendFeedback(
-                                                    Component.literal("Seed do slime chunk definida para: " + seed), false);
-                                            return 1;
-                                        } catch (NumberFormatException e) {
-                                            context.getSource().sendFeedback(
-                                                    Component.literal("Uso: /slimeseed <seed> (número inteiro)"), false);
-                                            return 0;
-                                        }
-                                    })
-                            )
+                            .executes(context -> {
+                                context.getSource().sendFeedback(
+                                        Component.literal("Uso: /slimeseed <seed> (número inteiro)"));
+                                return 0;
+                            })
             );
         });
 
@@ -116,9 +97,12 @@ public class SlimeChunkHudMod implements ClientModInitializer {
                 try {
                     var server = client.getSingleplayerServer();
                     if (server != null) {
-                        long spSeed = getOverworldSeed(server);
-                        seedProvider.setCurrentServerSeed(spSeed);
-                        seedProvider.setCurrentServer("singleplayer");
+                        var overworldLevel = server.getLevel(net.minecraft.world.level.Level.OVERWORLD);
+                        if (overworldLevel != null) {
+                            long spSeed = overworldLevel.getSeed();
+                            seedProvider.setCurrentServerSeed(spSeed);
+                            seedProvider.setCurrentServer("singleplayer");
+                        }
                     }
                 } catch (Throwable ignored) {
                     // Seed indisponível neste momento; mantém "desconhecida".
@@ -129,29 +113,10 @@ public class SlimeChunkHudMod implements ClientModInitializer {
 
     private static boolean isOverworld(ClientLevel level) {
         try {
-            return level.dimensionType().location()
-                    .equals(Identifier.fromNamespaceAndPath("minecraft", "overworld"));
+            return level.dimension() == net.minecraft.world.level.Level.OVERWORLD;
         } catch (Throwable e) {
             return true;
         }
-    }
-
-    /**
-     * Obtém a seed do overworld do servidor integrado.
-     * O nome exato do mķtodo pode variar entre mappings 26.3.
-     */
-    private static long getOverworldServerSeed(net.minecraft.server.integrated.IntegratedServer server) {
-        // Tentar mķtodos comuns
-        try {
-            var overworld = server.getLevel(net.minecraft.world.level.Level.OVERWORLD);
-            if (overworld != null) {
-                return overworld.getSeed();
-            }
-        } catch (Throwable ignored) {}
-        try {
-            return server.getOverworld().getSeed();
-        } catch (Throwable ignored) {}
-        return 0L;
     }
 
     public HudKeybind getKeybind() {

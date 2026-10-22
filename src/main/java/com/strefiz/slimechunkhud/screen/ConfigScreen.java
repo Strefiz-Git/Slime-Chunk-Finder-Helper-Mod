@@ -3,13 +3,12 @@ package com.strefiz.slimechunkhud.screen;
 import com.strefiz.slimechunkhud.config.ModConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.TextFieldWidget;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 
 /**
- * Ecrã simples de configuraçāo do mod. Permite ativar/desativar HUD e overlay,
- * ajustar âncora/offset/escala e definir a seed do servidor atual.
+ * Ecrã simples de configuraçāo do mod. Permite ativar/desativar HUD, overlay e
+ * modo notificaçāo.
  */
 public class ConfigScreen extends Screen {
 
@@ -58,25 +57,6 @@ public class ConfigScreen extends Screen {
                     cfg.notificationMode = !cfg.notificationMode;
                     ModConfig.save();
                     btn.setMessage(Component.literal("Notificaçāo: " + (cfg.notificationMode ? "ativada" : "desativada")));
-                })
-                .bounds(cx, cy, bw, bh).build());
-        cy += bh + 6;
-
-        // Campo: seed do servidor atual
-        TextFieldWidget seedField = new TextFieldWidget(this.font, cx, cy, bw, bh,
-                Component.literal("Seed do servidor"));
-        seedField.setText(String.valueOf(cfg.serverSeeds.getOrDefault("current", 0L)));
-        addRenderableWidget(seedField);
-        cy += bh + 6;
-
-        addRenderableWidget(Button.builder(
-                Component.literal("Definir seed"),
-                btn -> {
-                    try {
-                        long seed = Long.parseLong(seedField.getText());
-                        cfg.serverSeeds.put("current", seed);
-                        ModConfig.save();
-                    } catch (NumberFormatException ignored) {}
                 })
                 .bounds(cx, cy, bw, bh).build());
         cy += bh + 6;

@@ -2,7 +2,6 @@ package com.strefiz.slimechunkhud.input;
 
 import com.strefiz.slimechunkhud.config.ModConfig;
 import com.mojang.blaze3d.platform.InputConstants;
-import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
@@ -30,12 +29,12 @@ public class HudKeybind {
     private final KeyMapping keybind;
 
     public HudKeybind() {
-        this.keybind = KeyMappingHelper.registerKeyBinding(new KeyMapping(
+        this.keybind = new KeyMapping(
                 KEY_NAME,
                 InputConstants.Type.KEYBOARD,
                 InputConstants.KEY_K, // tecla padrão (redefinível pelo jogador)
                 KeyMapping.Category.GAMEPLAY
-        ));
+        );
     }
 
     public void register() {
