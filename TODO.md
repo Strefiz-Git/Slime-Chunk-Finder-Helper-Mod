@@ -25,6 +25,7 @@
 - [x] T-013 [P2] [S] git push para o repositório remoto. ✅ (push origin main concluído)
 - [x] T-014 [P3] [M] Detecção F3 + G via API pública — ChunkBorderDetector usa Minecraft.getInstance().debugEntries.isCurrentlyEnabled(DebugScreenEntries.CHUNK_BORDERS). Sem Mixin necessário. Overlay verde só desenha quando chunk borders está ativo.
 - [ ] T-015 [P3] [S] Resource pack / shader compatibilidade do overlay — acceptance: overlay não crasha com shaders.
+- [ ] T-016 [P1] [L] Fase 2 — servidor companheiro — acceptance: mod com environment *, entrypoint main + client; servidor calcula slime chunks e envia bitset; cliente detecta servidor com mod (ClientPlayNetworking.canSend) e desenha; fallback para modo manual. Build passa.
 
 ## Blocked (waiting for the user's answer — see QUESTIONS.md)
 

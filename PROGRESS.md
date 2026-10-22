@@ -5,13 +5,13 @@
 
 ## Current state
 
-- **Current milestone:** M0 — Foundations + Fase 1-8 (build passa, testes passam, runClient passa)
+- **Current milestone:** M0 — Foundations + Fase 1-8 + Fase 2 (servidor companheiro) — build passa
 - **Last update:** 2026-10-22
 - **Build/test health:** ✅ ./gradlew build passa ✅ ./gradlew test passa ✅ ./gradlew runClient passa (mod carrega no MC 26.3 sem crash)
 - **In progress:** nada — todas as tarefas principais concluídas
-- **Recommended next step:** avaliar T-015 (shaders, opcional), ou finalizar sessão
+- **Recommended next step:** avaliar T-015 (shaders, opcional), testar in-game com servidor companheiro, ou finalizar sessão
 - **Blockers / open questions:** nenhum
-- **Risks / relevant technical debt:** Detecção F3+G confirmada via bytecode do Minecraft 26.3 (javap): `Minecraft.debugEntries.isCurrentlyEnabled(DebugScreenEntries.CHUNK_BORDERS)`. Overlay verde depende de confirmação da API de render de mundo (LevelRenderEvents.AFTER_TRANSLUCENT_TERRAIN).
+- **Risks / relevant technical debt:** Detecção F3+G confirmada via bytecode do Minecraft 26.3 (javap): `Minecraft.debugEntries.isCurrentlyEnabled(DebugScreenEntries.CHUNK_BORDERS)`. Overlay verde depende de confirmação da API de render de mundo (LevelRenderEvents.AFTER_TRANSLUCENT_TERRAIN). Fase 2 implementada mas não testada in-game com servidor companheiro.
 
 ## Session log
 

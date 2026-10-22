@@ -22,7 +22,15 @@
 - Detecção F3+G via API pública do Minecraft 26.3: `Minecraft.getInstance().debugEntries.isCurrentlyEnabled(DebugScreenEntries.CHUNK_BORDERS)` (sem Mixin necessário)
 - Overlay verde desenha slime chunks apenas quando chunk borders (F3+G) está ativo
 - Mixin ChunkBorderFlagMixin removido (não mais necessário)
+- **Fase 2 — Servidor companheiro:** mod agora é "both" (environment: *), entrypoints main (servidor) + client
+- Payloads C2S (C2SRequestSlimeChunks) e S2C (S2CSlimeChunks) com bitset de slime chunks
+- Servidor calcula slime chunks com seed do mundo e envia apenas o resultado (seed nunca sai do servidor)
+- Cliente detecta servidor com mod (ClientPlayNetworking.canSend) e usa dados do servidor; fallback para modo manual
+- SlimeChunkServerMod: entrypoint do servidor (ModInitializer)
+- SlimeChunkNetworkingServer: handler C2S que calcula slime chunks com seed do mundo
+- ServerSlimeChunkProvider: detecta servidor com mod, pede área, armazena bitset
 
 ### Known limitations
 - Overlay verde depende de confirmação da API de render de mundo (LevelRenderEvents.AFTER_TRANSLUCENT_TERRAIN) e implementação do desenho de contornos (BufferBuilder/RenderType em 26.3)
 - Resource pack / shader compatibilidade do overlay não testada
+- Fase 2 não testada in-game com servidor companheiro
