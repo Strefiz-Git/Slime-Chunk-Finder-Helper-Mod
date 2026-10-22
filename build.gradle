@@ -3,51 +3,61 @@ plugins {
     id 'maven-publish'
 }
 
-version = "${mod_version}"
-group = 'com.strefiz.slimechunkhud'
+version = project.mod_version
+group = project.maven_group
 
-archivesBaseName = mod_id
-
-repositories {
-    // Loom adds the essential maven repositories automatically.
+base {
+    archivesName = project.archives_base_name
 }
 
-loom {
-    runs {
-        client {
-            workingDirectory project.file('run')
-        }
-    }
+repositories {
+    mavenCentral()
+    maven { url = 'https://maven.fabricmc.net/' }
 }
 
 dependencies {
-    modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_api_version}"
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+
+    implementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+
+    // Gson for config persistence (bundled with Fabric API / Minecraft).
     implementation 'com.google.code.gson:gson:2.11.0'
+
+    // Unit tests
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
 processResources {
-    def version = project.version
-
+    inputs.property "version", project.version
     filesMatching("fabric.mod.json") {
-        expand "version": version
+        expand "version": inputs.properties.version
     }
 }
 
 tasks.withType(JavaCompile).configureEach {
-    it.options.release = 21
+    it.options.release = 25
+    options.compilerArgs += ['-Xlint:none']
 }
 
 java {
-    withSourcesJar()
     toolchain {
-        languageVersion = JavaLanguageVersion.of(${java_version})
+        languageVersion = JavaLanguageVersion.of(25)
     }
+    withSourcesJar()
+    sourceCompatibility = JavaVersion.VERSION_25
+    targetCompatibility = JavaVersion.VERSION_25
 }
 
 jar {
     from("LICENSE") {
-        rename { "${it}_$archivesBaseName" }
+        rename { "${it}_${project.base.archivesName.get()}" }
     }
+}
+
+test {
+    useJUnitPlatform()
 }
 
 tasks.named('check') {

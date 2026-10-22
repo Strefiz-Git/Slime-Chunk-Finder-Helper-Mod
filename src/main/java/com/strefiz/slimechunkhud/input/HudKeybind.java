@@ -1,12 +1,12 @@
 package com.strefiz.slimechunkhud.input;
 
 import com.strefiz.slimechunkhud.config.ModConfig;
-import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import com.mojang.blaze3d.platform.InputConstants;
+import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.option.KeyBinding;
-import net.minecraft.text.Text;
-import org.lwjgl.glfw.GLFW;
+import net.minecraft.client.KeyMapping;
+import net.minecraft.client.Minecraft;
+import net.minecraft.network.chat.Component;
 
 /**
  * Keybind do HUD, registrada nas configurações de teclas do Minecraft.
@@ -21,26 +21,26 @@ import org.lwjgl.glfw.GLFW;
  */
 public class HudKeybind {
 
-    private static final String CATEGORY = "key.categories.slimechunkhud";
     private static final String KEY_NAME = "key.slimechunkhud.toggle_mode";
 
     private enum Mode {
         OFF, HUD, NOTIFICATION
     }
 
-    private final KeyBinding keybind;
+    private final KeyMapping keybind;
 
     public HudKeybind() {
-        this.keybind = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+        this.keybind = KeyMappingHelper.registerKeyBinding(new KeyMapping(
                 KEY_NAME,
-                GLFW.GLFW_KEY_K, // tecla padrão (redefinível pelo jogador)
-                CATEGORY
+                InputConstants.Type.KEYBOARD,
+                InputConstants.KEY_K, // tecla padrão (redefinível pelo jogador)
+                KeyMapping.Category.GAMEPLAY
         ));
     }
 
     public void register() {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
-            while (keybind.wasPressed()) {
+            while (keybind.consumeClick()) {
                 ModConfig cfg = ModConfig.get();
                 Mode current = cfg.notificationMode
                         ? Mode.NOTIFICATION
@@ -72,12 +72,12 @@ public class HudKeybind {
                     case HUD -> "Slime Chunk: modo HUD";
                     case NOTIFICATION -> "Slime Chunk: modo notificaçāo";
                 };
-                MinecraftClient.getInstance().player.sendMessage(Text.literal(msg), false);
+                Minecraft.getInstance().player.sendSystemMessage(Component.literal(msg));
             }
         });
     }
 
-    public KeyBinding getKeyBinding() {
+    public KeyMapping getKeyMapping() {
         return keybind;
     }
 }

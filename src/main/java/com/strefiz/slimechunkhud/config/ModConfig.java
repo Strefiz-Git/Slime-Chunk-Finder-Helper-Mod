@@ -3,7 +3,7 @@ package com.strefiz.slimechunkhud.config;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
-import net.minecraft.client.MinecraftClient;
+import net.fabricmc.loader.api.FabricLoader;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -12,16 +12,16 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * Persistência da configuraçāo em {@code config/slimechunkhud.json} (Gson).
  * <p>
  * As sementes de multiplayer sāo guardadas por servidor (chave = endereço).
+ * O diretório de configuraçōes vem do FabricLoader (nāo de MinecraftClient).
  */
 public final class ModConfig {
 
-    private static final Path CONFIG_DIR = MinecraftClient.getInstance().gameDir.resolve("config");
+    private static final Path CONFIG_DIR = FabricLoader.getInstance().getConfigDir();
     private static final Path CONFIG_FILE = CONFIG_DIR.resolve("slimechunkhud.json");
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
@@ -30,11 +30,11 @@ public final class ModConfig {
     @SerializedName("hudEnabled")
     public boolean hudEnabled = true;
 
-    /** Quando true, mostra notificação acima da hotbar ao entrar numa slime chunk em vez do HUD contínuo. */
+    /** Quando true, mostra notificaçāo acima da hotbar ao entrar numa slime chunk em vez do HUD contínuo. */
     @SerializedName("notificationMode")
     public boolean notificationMode = false;
 
-    /** Quando true, ativa a notificação de entrada na slime chunk (só relevante se notificationMode=true). */
+    /** Quando true, ativa a notificaçāo de entrada na slime chunk (só relevante se notificationMode=true). */
     @SerializedName("notifyOnEnterSlimeChunk")
     public boolean notifyOnEnterSlimeChunk = true;
 

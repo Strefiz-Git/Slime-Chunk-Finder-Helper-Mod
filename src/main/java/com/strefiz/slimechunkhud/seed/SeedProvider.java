@@ -1,7 +1,6 @@
 package com.strefiz.slimechunkhud.seed;
 
 import com.strefiz.slimechunkhud.config.ModConfig;
-import net.minecraft.util.Identifier;
 
 import java.util.Map;
 import java.util.Objects;
@@ -18,6 +17,10 @@ import java.util.concurrent.ConcurrentHashMap;
  *   <li>Indisponível: estado "seed desconhecida".</li>
  * </ol>
  * A funcionalidade sō fica ativa na Overworld.
+ * <p>
+ * A detecçāo de Overworld e a leitura da seed sāo feitas pelo entrypoint
+ * ({@link com.strefiz.slimechunkhud.SlimeChunkHudMod}) que tem acesso a
+ * {@code Minecraft.getInstance().level} e ao servidor integrado.
  */
 public class SeedProvider {
 

@@ -25,17 +25,11 @@
   "depends": {
     "fabricloader": ">=0.16.0",
     "minecraft": "~26.3",
-    "java": ">=21",
+    "java": ">=25",
     "fabric-api": "*"
   },
 
   "suggests": {
     "modmenu": "*"
-  },
-
-  "custom": {
-    "modmenu:screen": {
-      "class": "com.strefiz.slimechunkhud.screen.ModMenuScreenFactory"
-    }
   }
 }

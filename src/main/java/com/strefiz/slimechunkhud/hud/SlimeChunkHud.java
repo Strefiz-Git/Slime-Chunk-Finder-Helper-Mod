@@ -2,41 +2,46 @@ package com.strefiz.slimechunkhud.hud;
 
 import com.strefiz.slimechunkhud.config.ModConfig;
 import com.strefiz.slimechunkhud.seed.SeedProvider;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElement;
 import net.minecraft.client.DeltaTracker;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.network.chat.Component;
+import net.minecraft.util.MathHelper;
 
 /**
  * Elemento de HUD que mostra se a chunk atual é slime chunk.
  * <p>
  * Renderiza texto colorido (verde = sim, vermelho = nāo, amarelo = seed
  * desconhecida) posicionado conforme a âncora, offsets e escala da config.
- * Escondido fora da Overworld e quando o HUD estā oculto (F1 — via render
- * condiçāo herdada da camada a que está anexado).
+ * Escondido fora da Overworld.
  */
 public class SlimeChunkHud implements HudElement {
 
     private final SeedProvider seedProvider;
     private final ModConfig.Supplier config;
 
-    public SlimeChunkHud(SeedProvider seedProvider, Supplier config) {
+    public SlimeChunkHud(SeedProvider seedProvider, ModConfig.Supplier config) {
         this.seedProvider = seedProvider;
         this.config = config;
     }
 
     @Override
-    public void render(GuiGraphics graphics, DeltaTracker deltaTracker) {
+    public void extractRenderState(GuiGraphicsExtractor graphics, DeltaTracker deltaTracker) {
+        render(graphics);
+    }
+
+    /** Desenha o texto do HUD. Chama de {@link #extractRenderState}. */
+    public void render(GuiGraphicsExtractor graphics) {
         ModConfig cfg = config.get();
         if (!cfg.hudEnabled) {
             return;
         }
 
-        MinecraftClient client = MinecraftClient.getInstance();
-        if (client.player == null || client.world == null) {
+        Minecraft client = Minecraft.getInstance();
+        if (client.player == null || client.level == null) {
             return;
         }
 
@@ -45,7 +50,7 @@ public class SlimeChunkHud implements HudElement {
             return;
         }
 
-        TextRenderer textRenderer = client.textRenderer;
+        Font font = client.font;
         int chunkX = MathHelper.floor(client.player.getX() / 16.0);
         int chunkZ = MathHelper.floor(client.player.getZ() / 16.0);
 
@@ -62,23 +67,22 @@ public class SlimeChunkHud implements HudElement {
             color = cfg.textColorNotSlime;
         }
 
-        int width = client.getWindow().getScaledWidth();
-        int height = client.getWindow().getScaledHeight();
-        int[] pos = position(width, height, textRenderer.getWidth(text), textRenderer.fontHeight, cfg);
+        int scaledWidth = client.getWindow().getGuiScaledWidth();
+        int scaledHeight = client.getWindow().getGuiScaledHeight();
+        int[] pos = position(scaledWidth, scaledHeight, font.width(text), font.lineHeight, cfg);
 
-        MatrixStack matrices = graphics.getMatrices();
+        PoseStack matrices = graphics.poseStack();
         matrices.pushPose();
         matrices.translate(pos[0], pos[1], 0);
         matrices.scale(cfg.hudScale, cfg.hudScale, 1.0f);
 
         if (cfg.showBackground) {
-            int bgWidth = textRenderer.getWidth(text);
-            int bgHeight = textRenderer.fontHeight;
+            int bgWidth = font.width(text);
+            int bgHeight = font.lineHeight;
             graphics.fill(0, 0, bgWidth, bgHeight, 0x80000000);
         }
 
-        graphics.drawText(textRenderer, text, 0, 0, color, true);
-        matrices.popPose();
+        graphics.text(font, Component.literal(text), pos[0], pos[1], color, true);
     }
 
     /**
