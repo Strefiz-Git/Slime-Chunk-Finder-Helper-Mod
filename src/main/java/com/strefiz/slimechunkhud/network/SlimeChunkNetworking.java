@@ -12,11 +12,10 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 public class SlimeChunkNetworking {
 
     public static void registerClient(com.strefiz.slimechunkhud.seed.ServerSlimeChunkProvider provider) {
-        // Registra payloads (comum a cliente e servidor).
-        PayloadTypeRegistry.serverboundPlay().register(C2SRequestSlimeChunks.TYPE, C2SRequestSlimeChunks.CODEC);
-        PayloadTypeRegistry.clientboundPlay().register(S2CSlimeChunks.TYPE, S2CSlimeChunks.CODEC);
-
         // Handler do cliente: recebe slime chunks do servidor.
+        // NOTA: os payloads já são registrados pelo servidor (SlimeChunkNetworkingServer.register()).
+        // Em singleplayer, o servidor registra primeiro, por isso não registamos de novo aqui.
+        // Em multiplayer (cliente puro), os payloads são registrados pelo servidor remoto.
         ClientPlayNetworking.registerGlobalReceiver(
                 S2CSlimeChunks.TYPE, (payload, context) -> {
                     provider.onSlimeChunksReceived(payload);
