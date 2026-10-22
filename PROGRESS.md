@@ -9,9 +9,9 @@
 - **Last update:** 2026-10-22
 - **Build/test health:** ✅ ./gradlew build passa ✅ ./gradlew test passa ✅ ./gradlew runClient passa (mod carrega no MC 26.3 sem crash)
 - **In progress:** nada — todas as tarefas principais concluídas
-- **Recommended next step:** avaliar T-014 (Mixin F3+G, opcional) e T-015 (shaders, opcional), ou finalizar sessão
-- **Blockers / open questions:** Mixin F3+G inativo por segurança (target/campo a confirmar em 26.3); overlay verde depende de confirmação da API de render de mundo
-- **Risks / relevant technical debt:** Nomes de API confirmados via mods irmãos (RocketWithSpearMod, ScreenMine, ClientHarvestMod) que compilam nesta máquina para MC 26.3
+- **Recommended next step:** avaliar T-015 (shaders, opcional), ou finalizar sessão
+- **Blockers / open questions:** nenhum
+- **Risks / relevant technical debt:** Detecção F3+G confirmada via bytecode do Minecraft 26.3 (javap): `Minecraft.debugEntries.isCurrentlyEnabled(DebugScreenEntries.CHUNK_BORDERS)`. Overlay verde depende de confirmação da API de render de mundo (LevelRenderEvents.AFTER_TRANSLUCENT_TERRAIN).
 
 ## Session log
 

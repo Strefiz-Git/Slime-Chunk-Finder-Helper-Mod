@@ -18,6 +18,11 @@
 - Versões do build alinhadas com mods irmãos que compilam (Loom 1.17-SNAPSHOT, Fabric API 0.160.5+26.3, Loader 0.19.5, Java 25)
 - Nomes de API corrigidos para Minecraft 26.3 (confirmados via ScreenMine, RocketWithSpearMod, ClientHarvestMod)
 
-### Blocked / Known limitations
-- Mixin F3+G inativo por segurança: target/campo do renderer de chunk borders não confirmado em 26.3; overlay verde depende de confirmação da API de render de mundo
-- Detecção automática de F3+G não implementada; use toggle manual na config até o Mixin ser confirmado
+### Added
+- Detecção F3+G via API pública do Minecraft 26.3: `Minecraft.getInstance().debugEntries.isCurrentlyEnabled(DebugScreenEntries.CHUNK_BORDERS)` (sem Mixin necessário)
+- Overlay verde desenha slime chunks apenas quando chunk borders (F3+G) está ativo
+- Mixin ChunkBorderFlagMixin removido (não mais necessário)
+
+### Known limitations
+- Overlay verde depende de confirmação da API de render de mundo (LevelRenderEvents.AFTER_TRANSLUCENT_TERRAIN) e implementação do desenho de contornos (BufferBuilder/RenderType em 26.3)
+- Resource pack / shader compatibilidade do overlay não testada

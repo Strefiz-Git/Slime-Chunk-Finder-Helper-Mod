@@ -23,7 +23,7 @@
 - [x] T-011 [P2] [S] Preencher README (descrição, features, getting started, seed em multiplayer).
 - [x] T-012 [P2] [S] Atualizar CHANGELOG.md com resumo do release.
 - [x] T-013 [P2] [S] git push para o repositório remoto. ✅ (push origin main concluído)
-- [ ] T-014 [P3] [M] Mixin ativo para detecção F3 + G — acceptance: ChunkBorderFlagMixin aplicado sem crash em 26.3 (se houver alvo estável).
+- [x] T-014 [P3] [M] Detecção F3 + G via API pública — ChunkBorderDetector usa Minecraft.getInstance().debugEntries.isCurrentlyEnabled(DebugScreenEntries.CHUNK_BORDERS). Sem Mixin necessário. Overlay verde só desenha quando chunk borders está ativo.
 - [ ] T-015 [P3] [S] Resource pack / shader compatibilidade do overlay — acceptance: overlay não crasha com shaders.
 
 ## Blocked (waiting for the user's answer — see QUESTIONS.md)

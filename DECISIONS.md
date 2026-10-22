@@ -69,6 +69,14 @@
 - **Assumptions:** Fabric API + Loom versions in gradle.properties are placeholders.
 - **How to revert:** edit `gradle.properties`/`build.gradle` versions.
 
+### D-010 — Detecção F3+G via API pública (sem Mixin)  (2026-10-22) — Accepted
+- **Context:** O overlay verde nos chunk borders (F3 + G) precisava de detectar se a flag de chunk borders estava ativa. Inicialmente assumimos que era necessário um Mixin no renderer de chunk borders (inativo por segurança).
+- **Options:** A) Mixin no DebugRenderer para ler a flag. B) Ler a flag via API pública do Minecraft 26.3.
+- **Analysis:** precedent: bytecode do Minecraft 26.3 (javap) mostra `DebugRenderer.refreshRendererList()` chamando `minecraft.debugEntries.isCurrentlyEnabled(DebugScreenEntries.CHUNK_BORDERS)`. evidence: javap do `minecraft-merged.jar` (Fabric Loom cache). risk: nenhum (API pública). simplicity: B é mais simples e mais robusto.
+- **Decision:** B — `ChunkBorderDetector.chunkBordersActive()` lê a flag diretamente de `Minecraft.getInstance().debugEntries.isCurrentlyEnabled(DebugScreenEntries.CHUNK_BORDERS)`. Mixin removido.
+- **Assumptions:** `DebugScreenEntries.CHUNK_BORDERS` e `DebugScreenEntryList.isCurrentlyEnabled(Identifier)` existem em 26.3 (confirmado via javap).
+- **How to revert:** voltar ao Mixin se a API mudar.
+
 ### D-009 — Seed: cliente-only, seed manual por servidor, sem encriptação  (2026-10-22) — Accepted
 - **Context:** O utilizador quer o mod para pessoas gerais. Em servidores vanilla, o servidor nunca envia a seed ao cliente (só um hash parcial). A seed tem de ser introduzida manualmente via /slimeseed <seed>. O utilizador não quer encriptação complexa nem servidor companheiro por agora; basta que o mod funcione em servidores vanilla com seed manual.
 - **Options:** A) Manter cliente-only, seed manual por servidor, sem encriptação. B) Encriptar a seed entre cliente e servidor. C) Servidor companheiro que envia slime chunks (não a seed).
