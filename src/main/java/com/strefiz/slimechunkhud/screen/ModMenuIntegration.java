@@ -1,9 +1,6 @@
 package com.strefiz.slimechunkhud.screen;
 
-import com.strefiz.slimechunkhud.ConfigScreen;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenRegistrationEvents;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.Screen;
 
 /**
  * Integraçāo opcional com Mod Menu e botão de configuraçāo no menu principal.
@@ -15,8 +12,6 @@ import net.minecraft.client.gui.screen.Screen;
 public class ModMenuIntegration {
 
     public static void init() {
-        ScreenRegistrationEvents.MAIN_MENU.register((screen, context) -> {
-            // Botão de configuração no menu principal (simples e sem depender do Mod Menu).
-        });
+        ModMenuScreenFactory.init();
     }
 }

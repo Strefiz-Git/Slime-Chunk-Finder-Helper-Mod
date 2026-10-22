@@ -30,6 +30,14 @@ public final class ModConfig {
     @SerializedName("hudEnabled")
     public boolean hudEnabled = true;
 
+    /** Quando true, mostra notificação acima da hotbar ao entrar numa slime chunk em vez do HUD contínuo. */
+    @SerializedName("notificationMode")
+    public boolean notificationMode = false;
+
+    /** Quando true, ativa a notificação de entrada na slime chunk (só relevante se notificationMode=true). */
+    @SerializedName("notifyOnEnterSlimeChunk")
+    public boolean notifyOnEnterSlimeChunk = true;
+
     @SerializedName("hudAnchor")
     public HudAnchor hudAnchor = HudAnchor.TOP_LEFT;
 

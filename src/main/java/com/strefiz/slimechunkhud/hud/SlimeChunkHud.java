@@ -1,6 +1,5 @@
 package com.strefiz.slimechunkhud.hud;
 
-import com.strefiz.slimechunkhud.SlimeChunkHudMod;
 import com.strefiz.slimechunkhud.config.ModConfig;
 import com.strefiz.slimechunkhud.seed.SeedProvider;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElement;

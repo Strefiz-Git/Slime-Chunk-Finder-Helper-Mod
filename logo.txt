@@ -1,0 +1,14 @@
+Criei o logo em pixel art: um slime verde com a cara sorridente, dentro dos cantos verdes de um chunk border, sobre uma grelha de chunks escura. Representa o que o mod faz, e o estilo combina com o Minecraft.
+
+Ficheiros:
+
+icon.png (128×128), o ícone do mod
+logo_512.png (512×512), para README, Modrinth e CurseForge
+logo.svg, a versão vetorial
+
+Para usar o ícone no mod, copia o icon.png para src/main/resources/assets/slimechunkhud/icon.png e adiciona no fabric.mod.json:
+
+json
+"icon": "assets/slimechunkhud/icon.png"
+
+Se quiseres, ajusto cores, o estilo (menos pixelado, só o slime sem fundo) ou faço uma versão com texto “Slime Chunk HUD”.

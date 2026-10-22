@@ -2,6 +2,8 @@ package com.strefiz.slimechunkhud;
 
 import com.strefiz.slimechunkhud.config.ModConfig;
 import com.strefiz.slimechunkhud.hud.SlimeChunkHud;
+import com.strefiz.slimechunkhud.hud.SlimeChunkNotifier;
+import com.strefiz.slimechunkhud.hud.SlimeChunkStateTracker;
 import com.strefiz.slimechunkhud.input.HudKeybind;
 import com.strefiz.slimechunkhud.render.SlimeChunkOverlay;
 import com.strefiz.slimechunkhud.screen.ModMenuIntegration;
@@ -41,6 +43,8 @@ public class SlimeChunkHudMod implements ClientModInitializer {
 
     private HudKeybind keybind;
     private SlimeChunkHud hud;
+    private SlimeChunkNotifier notifier;
+    private SlimeChunkStateTracker tracker;
     private SlimeChunkOverlay overlay;
     private SeedProvider seedProvider;
 
@@ -53,7 +57,9 @@ public class SlimeChunkHudMod implements ClientModInitializer {
 
         ModConfig.load();
 
+        tracker = new SlimeChunkStateTracker(seedProvider);
         hud = new SlimeChunkHud(seedProvider, ModConfig::get);
+        notifier = new SlimeChunkNotifier(seedProvider, ModConfig::get, tracker);
         overlay = new SlimeChunkOverlay(seedProvider, ModConfig::get);
 
         // Integraçāo com Mod Menu (config no menu principal).
@@ -62,6 +68,10 @@ public class SlimeChunkHudMod implements ClientModInitializer {
         // HUD (render condiçāo herdada da camada anexada: respeita F1/Options.hideGui).
         HudElementRegistry.attachElementBefore(
                 VanillaHudElements.CHAT, HUD_ID, hud::render);
+
+        // Notificaçāo acima da hotbar ao entrar numa slime chunk.
+        HudElementRegistry.attachElementBefore(
+                VanillaHudElements.CHAT, Identifier.of(MOD_ID, "slime_chunk_notifier"), notifier::render);
 
         // Overlay verde nos chunk borders (F3 + G).
         LevelRenderEvents.AFTER_TRANSLUCENT_TERRAIN.register((context) -> {
@@ -97,11 +107,19 @@ public class SlimeChunkHudMod implements ClientModInitializer {
             );
         });
 
-        // Rastrear mundo/dimensão a cada tick; resetar ao trocar de mundo.
+        // Rastrear mundo/dimensão, slime chunk state e notificaçāo a cada tick.
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             ClientWorld world = client.world;
             boolean overworld = world != null && isOverworld(world);
             seedProvider.setDimensionOverworld(overworld);
+
+            tracker.tick();
+            notifier.tick();
+
+            // Reset ao trocar de mundo/dimensão.
+            if (!overworld) {
+                tracker.reset();
+            }
 
             // Singleplayer: tentar obter a seed do servidor integrado.
             if (overworld && !seedProvider.hasSeed()) {
