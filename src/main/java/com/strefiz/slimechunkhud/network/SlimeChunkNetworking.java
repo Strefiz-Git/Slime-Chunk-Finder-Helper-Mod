@@ -13,8 +13,17 @@ public class SlimeChunkNetworking {
 
     public static void registerClient(com.strefiz.slimechunkhud.seed.ServerSlimeChunkProvider provider) {
         // Registra payloads no cliente (necessário para enviar C2S e receber S2C).
-        PayloadTypeRegistry.serverboundPlay().register(C2SRequestSlimeChunks.TYPE, C2SRequestSlimeChunks.CODEC);
-        PayloadTypeRegistry.clientboundPlay().register(S2CSlimeChunks.TYPE, S2CSlimeChunks.CODEC);
+        // Em singleplayer, o servidor integrado já registrou; ignoramos erro se já registado.
+        try {
+            PayloadTypeRegistry.serverboundPlay().register(C2SRequestSlimeChunks.TYPE, C2SRequestSlimeChunks.CODEC);
+        } catch (IllegalArgumentException ignored) {
+            // Já registado (ex: singleplayer, servidor integrado registrou primeiro)
+        }
+        try {
+            PayloadTypeRegistry.clientboundPlay().register(S2CSlimeChunks.TYPE, S2CSlimeChunks.CODEC);
+        } catch (IllegalArgumentException ignored) {
+            // Já registado
+        }
 
         // Handler do cliente: recebe slime chunks do servidor.
         ClientPlayNetworking.registerGlobalReceiver(
